@@ -4,9 +4,9 @@
 #include "main.h"
 
 /* Настройки часов */
-#define CLOCK_X 120																	//Координата X центра часов
+#define CLOCK_X 110																	//Координата X центра часов
 #define CLOCK_Y 120																	//Координата Y центра часов
-#define CLOCK_RADIUS_EXT 120												//Размер внешнего радиуса часов
+#define CLOCK_RADIUS_EXT 110												//Размер внешнего радиуса часов
 #define CLOCK_RADIUS_INT (CLOCK_RADIUS_EXT*0.93f)		//Размер внутреннего радиуса часов
 #define CLOCK_RADIUS_NUMS (CLOCK_RADIUS_EXT*0.86f)	//Размер радиуса цифр и точек
 #define CLOCK_ARROW_LENGTH (CLOCK_RADIUS_EXT*0.75f)	//Длина секундной стрелки
