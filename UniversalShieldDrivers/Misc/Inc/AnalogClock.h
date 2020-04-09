@@ -19,6 +19,6 @@
 
 /* Прототипы функций */
 void clockInit(uint16_t backColor); 								//Инициализация циферблата часов
-void printTime(uint8_t h, uint8_t m, uint8_t s); 		//Печать текущего времени на экране
+void printAnalogTime(uint8_t h, uint8_t m, uint8_t s); 		//Печать текущего времени на экране
 
 #endif

@@ -34,7 +34,7 @@ void US_main(void) {
 		uint8_t hour = 2;
 		uint8_t day= 9, month = 4, year = 20, wd = HAL_GetTick()/1000%7;
 		
-		printTime(hour,min,sec);
+		printAnalogTime(hour,min,sec);
 		
 		TFT_setColor(TFT_COLOR_Silver);
 		TFT_setFontSize(3);

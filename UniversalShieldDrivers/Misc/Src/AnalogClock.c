@@ -41,7 +41,7 @@ void clockInit(uint16_t backColor) {
 }
 
 /* Печать текущего времени на экране */
-void printTime(uint8_t h, uint8_t m, uint8_t s) {
+void printAnalogTime(uint8_t h, uint8_t m, uint8_t s) {
 	/* Переменные для запоминания предыдущего значения */
 	static uint8_t oldSArrow = 0;
 	static uint8_t oldMArrow = 0;
