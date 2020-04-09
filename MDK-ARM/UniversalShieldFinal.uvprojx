@@ -421,9 +421,9 @@
               <FilePath>..\UniversalShieldDrivers\Digital\Src\LM75.c</FilePath>
             </File>
             <File>
-              <FileName>LM75.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\UniversalShieldDrivers\Digital\Inc\LM75.h</FilePath>
+              <FileName>DS3231.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\UniversalShieldDrivers\Digital\Src\DS3231.c</FilePath>
             </File>
           </Files>
         </Group>

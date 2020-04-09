@@ -9,6 +9,7 @@
 #include "DisplayButtons.h" //Экранные кнопки
 #include "AnalogClock.h"		//Аналоговые часы
 #include "LM75.h"						//Цифровой датчик температуры
+#include "DS3231.h"					//Часы реального времени
 #include <stdio.h>					//Стандартный ввод/вывод
 /* Прототипы функций */
 
@@ -25,28 +26,28 @@ void US_main(void) {
 	TFT_init(TFT_ORIENT_LANDSCAPE, &hspi1);
 	XPT2046_init(&hspi1, XPT2046_LANDSCAPE, 320, 240);
 	TFT_fillDisplay(BACKGROUND_COLOR); //Заливка дисплея чёрным
+	TFT_setTextBackColor(BACKGROUND_COLOR); //Чёрный фон текста на экране
 	
 	clockInit(BACKGROUND_COLOR); //Инициализация аналоговых часов
-	//TODO: В инициализацию класть фон и координаты часов
-	TFT_setTextBackColor(BACKGROUND_COLOR); //Чёрный фон текста на экране
+	RTC_init(&hi2c1);	//Инициализация RTC
+	
 	char weekdays[7][23] = {"Понедельник","    Вторник","      Среда","    Четверг","    Пятница","    Суббота","Воскресение"};
+	
 	while(1) {
-		uint8_t sec = HAL_GetTick()/1000%60;
-		uint8_t min = 28;
-		uint8_t hour = 2;
-		uint8_t day= 9, month = 4, year = 20, wd = HAL_GetTick()/1000%7;
+		RTC_time time = RTC_getTime();
+		RTC_date date = RTC_getDate();
 		
-		printAnalogTime(hour,min,sec);
+		printAnalogTime(time.hour,time.min,time.sec);
 		
 		TFT_setColor(TFT_COLOR_Silver);
 		TFT_setFontSize(3);
 		TFT_setCursor(178,0);
-		TFT_printf("%02d.%02d.%02d", day, month, year);
+		TFT_printf("%02d.%02d.%02d", date.day, date.month, date.year);
 		TFT_setCursor(232,42);
-		TFT_printf("%02d%c%02d",hour,sec%2 ? ':' : ' ',min);
+		TFT_printf("%02d%c%02d",time.hour,time.sec%2 ? ':' : ' ',time.min);
 		TFT_setFontSize(2);
 		TFT_setCursor(189,24);
-		TFT_printf("%11s",weekdays[wd]);
+		TFT_printf("%11s",weekdays[date.weekday-1]);
 		
 		TFT_setCursor(200, 200);
 		TFT_printf("%3.2f*C", LM75_getTemperature(&hi2c1,LM75_DEFAULTADDR));
