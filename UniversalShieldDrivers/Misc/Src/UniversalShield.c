@@ -31,6 +31,8 @@ void US_main(void) {
 #define CLOCK_RADIUS_EXT 120
 #define CLOCK_RADIUS_INT (CLOCK_RADIUS_EXT*0.93f)
 #define CLOCK_RADIUS_NUMS (CLOCK_RADIUS_EXT*0.86f)
+#define CLOCK_BACKCOLOR TFT_COLOR_Black
+#define CLOCK_ARROW_LENGTH (CLOCK_RADIUS_EXT*0.75f)
 /* Инициализация циферблата часов */
 void clockInit(void) {
 	/* Рисование внешней и внутренней окружностей */
@@ -41,10 +43,12 @@ void clockInit(void) {
 	TFT_fillCircle(CLOCK_X+(CLOCK_RADIUS_NUMS-3)*cos(fi*3.14f/180.0f), CLOCK_Y-(CLOCK_RADIUS_NUMS-3)*sin(fi*3.14f/180.0f), 4, TFT_COLOR_Yellow);
 	/* Расстановка значений часов */
 	TFT_setColor(CLOCK_COLOR_NUMBERS);
-	TFT_setTextBackColor(TFT_COLOR_Black);
+	TFT_setTextBackColor(CLOCK_BACKCOLOR);
 	TFT_setFontSize(2);
 	TFT_print(CLOCK_X-8+CLOCK_RADIUS_NUMS, CLOCK_Y-7,		"3");
 	TFT_print(CLOCK_X-4, CLOCK_Y+CLOCK_RADIUS_NUMS-12,	"6");
 	TFT_print(CLOCK_X-CLOCK_RADIUS_NUMS, CLOCK_Y-7,			"9");
 	TFT_print(CLOCK_X-11, CLOCK_Y-CLOCK_RADIUS_NUMS-1,	"12");
+	/* Стирание стрелок если таковые имелись */
+	TFT_fillCircle(CLOCK_X, CLOCK_Y, CLOCK_ARROW_LENGTH, CLOCK_BACKCOLOR);
 }
