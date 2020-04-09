@@ -423,6 +423,11 @@
               <FileType>1</FileType>
               <FilePath>..\UniversalShieldDrivers\Misc\Src\UniversalShield.c</FilePath>
             </File>
+            <File>
+              <FileName>AnalogClock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\UniversalShieldDrivers\Misc\Src\AnalogClock.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
