@@ -23,8 +23,8 @@
 #define delay_ms(d) HAL_Delay(d)
 
 /* Макросы взаимодействия с портами ввода/вывода */
-#define TFT_RESET_Reset         HAL_GPIO_WritePin(RESET_GPIO_Port, RESET_Pin, GPIO_PIN_RESET)  
-#define TFT_RESET_Set           HAL_GPIO_WritePin(RESET_GPIO_Port, RESET_Pin, GPIO_PIN_SET)
+#define TFT_RESET_Reset()         HAL_GPIO_WritePin(D_RESET_GPIO_Port, D_RESET_Pin, GPIO_PIN_RESET)  
+#define TFT_RESET_Set()           HAL_GPIO_WritePin(D_RESET_GPIO_Port, D_RESET_Pin, GPIO_PIN_SET)
 //Опускание/поднятие логического уровня CS дисплея
 #define TFT_CS_Reset            HAL_GPIO_WritePin(D_CS_GPIO_Port, D_CS_Pin, GPIO_PIN_RESET)
 #define TFT_CS_Set              HAL_GPIO_WritePin(D_CS_GPIO_Port, D_CS_Pin, GPIO_PIN_SET)

@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F446xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\UniversalShieldDrivers\Misc\Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\UniversalShieldDrivers\Misc\Inc;..\UniversalShieldDrivers\Display\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -391,6 +391,23 @@
         </Group>
         <Group>
           <GroupName>UniversalShield/Display</GroupName>
+          <Files>
+            <File>
+              <FileName>BD663474.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\UniversalShieldDrivers\Display\Src\BD663474.c</FilePath>
+            </File>
+            <File>
+              <FileName>DisplayButtons.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\UniversalShieldDrivers\Display\Src\DisplayButtons.c</FilePath>
+            </File>
+            <File>
+              <FileName>XPT2046.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\UniversalShieldDrivers\Display\Src\XPT2046.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>UniversalShield/Analog</GroupName>
@@ -405,11 +422,6 @@
               <FileName>UniversalShield.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\UniversalShieldDrivers\Misc\Src\UniversalShield.c</FilePath>
-            </File>
-            <File>
-              <FileName>UniversalShield.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\UniversalShieldDrivers\Misc\Inc\UniversalShield.h</FilePath>
             </File>
           </Files>
         </Group>

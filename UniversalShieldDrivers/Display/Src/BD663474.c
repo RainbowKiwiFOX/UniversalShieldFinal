@@ -57,9 +57,9 @@ static void _spi_init(SPI_HandleTypeDef *spi) {
 
 //Аппаратная перезагрузка дисплея
 void TFT_reset(void) {
-    TFT_RESET_Reset;
+    TFT_RESET_Reset();
     delay_ms(1);
-    TFT_RESET_Set;
+    TFT_RESET_Set();
     delay_ms(1);
 }
 //Инициализация дисплея
@@ -251,7 +251,7 @@ void TFT_Off(void) {
     TFT_sendCmd(0x100, 0x0000); //PON = 0
     //Deep standby set
     TFT_sendCmd(0x100, 0x0004);*/
-    TFT_RESET_Reset; //Просто сброс дисплея
+    TFT_RESET_Reset(); //Просто сброс дисплея
 }
 //Включить дисплей
 void TFT_On(void) {
@@ -410,8 +410,8 @@ void TFT_drawCircle(uint16_t x, uint16_t y, uint16_t radius, uint8_t size, uint1
    while (y_ >= 0) {
          TFT_fillRectangle(x + x_-size+1, y + y_-size, size, size, color);
          TFT_fillRectangle(x + x_-size+1, y - y_, size, size, color);
-         TFT_fillRectangle(x - x_, y + y_-size, size, size, color);
-         TFT_fillRectangle(x - x_, y - y_, size, size, color);
+         TFT_fillRectangle(x - x_+1, y + y_-size, size, size, color);
+         TFT_fillRectangle(x - x_+1, y - y_, size, size, color);
          error = 2 * (delta + y_) - 1;
          if ((delta < 0) && (error <= 0)) {
                  delta += 2 * ++x_ + 1;
@@ -471,7 +471,7 @@ void TFT_fillCircle(uint16_t x, uint16_t y, uint16_t radius, uint16_t color) {
    int16_t delta = 1 - 2 * radius;
    int16_t error = 0;
    while (y_ >= 0) {
-         TFT_drawLineVertical(x - x_, y - y_, y_*2, 1, color);
+         TFT_drawLineVertical(x - x_+1, y - y_, y_*2, 1, color);
          TFT_drawLineVertical(x + x_, y - y_, y_*2, 1, color);
          
          error = 2 * (delta + y_) - 1;
