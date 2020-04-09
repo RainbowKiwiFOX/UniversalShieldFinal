@@ -23,9 +23,9 @@ void US_main(void) {
 	clockInit();
 	
 	while(1) {
-		uint8_t sec = HAL_GetTick()/1000%60;
-		uint8_t min = HAL_GetTick()/1000%60;
-		uint8_t hour = HAL_GetTick()/1000%12;
+		uint8_t sec = HAL_GetTick()/10%60;
+		uint8_t min = HAL_GetTick()/10/60;
+		uint8_t hour = HAL_GetTick()/10/360;
 		uint32_t starTime = HAL_GetTick();
 		
 		printTime(hour,min,sec);
@@ -34,9 +34,7 @@ void US_main(void) {
 		char buff[5];
 		sprintf(buff,"%2d",sec);
 		TFT_print(250, 50, buff);
-		sprintf(buff,"%4d",time);
-		TFT_print(250, 100, buff);
-		HAL_Delay(1000);
+		//HAL_Delay(1000);
 	}
 	
 	//TODO: Диспетчеризация задач, определение состояний и событий
@@ -66,9 +64,13 @@ void clockInit(void) {
 	/* Рисование внешней и внутренней окружностей */
 	TFT_drawCircle(CLOCK_X, CLOCK_Y, CLOCK_RADIUS_EXT, 2, CLOCK_COLOR_EXT);
 	TFT_drawCircle(CLOCK_X, CLOCK_Y, CLOCK_RADIUS_INT, 3, CLOCK_COLOR_INT);
-	/* Рисование точек делений */
-	for(uint16_t fi = 0; fi <= 360; fi+=30)
-	TFT_fillCircle(CLOCK_X+(CLOCK_RADIUS_NUMS-3)*cos(fi*3.141596f/180.0f), CLOCK_Y-(CLOCK_RADIUS_NUMS-3)*sin(fi*3.14f/180.0f), 4, TFT_COLOR_Yellow);
+	/* Рисование точек делений по часам */
+	for(uint16_t angle = 0; angle <= 360; angle += 30)
+	TFT_fillCircle(CLOCK_X+(CLOCK_RADIUS_NUMS-3)*cos(CLOCK_getfi(angle)), CLOCK_Y-(CLOCK_RADIUS_NUMS-3)*sin(CLOCK_getfi(angle)), 4, TFT_COLOR_Yellow);
+	/* Рисование точек делений по минутам */
+	for(uint16_t angle = 0; angle <= 360; angle += 6)
+	TFT_fillCircle(CLOCK_X+(CLOCK_RADIUS_NUMS-3)*cos(CLOCK_getfi(angle)), CLOCK_Y-(CLOCK_RADIUS_NUMS-3)*sin(CLOCK_getfi(angle)), 1, TFT_COLOR_Yellow);
+
 	/* Расстановка значений часов */
 	TFT_setColor(CLOCK_COLOR_NUMBERS);
 	TFT_setTextBackColor(CLOCK_COLOR_BACK);
@@ -83,9 +85,7 @@ void clockInit(void) {
 
 /* Печать текущего времени на экране */
 void printTime(uint8_t h, uint8_t m, uint8_t s) {
-	/* Стирание часовой стрелки */
-	/* Стирание минутной стрелки */
-	/* Стирание секундной стрелки */
+	/* Переменные для запоминания предыдущего значения */
 	static uint8_t oldSArrow = 0;
 	static uint8_t oldMArrow = 0;
 	static uint8_t oldHArrow = 0;
