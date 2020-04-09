@@ -1,12 +1,14 @@
 #include "UniversalShield.h"
 /* Библиотеки для работы с периферией */
 #include "spi.h"
+#include "i2c.h"
 /* Библиотеки для работы с дисплеем */
 #include "BD663474.h"
 #include "XPT2046.h"
 /* Прочие библиотеки */
 #include "DisplayButtons.h" //Экранные кнопки
 #include "AnalogClock.h"		//Аналоговые часы
+#include "LM75.h"						//Цифровой датчик температуры
 #include <stdio.h>					//Стандартный ввод/вывод
 /* Прототипы функций */
 
@@ -45,6 +47,9 @@ void US_main(void) {
 		TFT_setFontSize(2);
 		TFT_setCursor(189,24);
 		TFT_printf("%11s",weekdays[wd]);
+		
+		TFT_setCursor(200, 200);
+		TFT_printf("%3.2f*C", LM75_getTemperature(&hi2c1,LM75_DEFAULTADDR));
 		HAL_Delay(1000);
 	}
 	

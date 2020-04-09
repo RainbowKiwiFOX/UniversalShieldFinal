@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F446xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\UniversalShieldDrivers\Misc\Inc;..\UniversalShieldDrivers\Display\Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\UniversalShieldDrivers\Misc\Inc;..\UniversalShieldDrivers\Display\Inc;..\UniversalShieldDrivers\Digital\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -414,6 +414,18 @@
         </Group>
         <Group>
           <GroupName>UniversalShield/Digital</GroupName>
+          <Files>
+            <File>
+              <FileName>LM75.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\UniversalShieldDrivers\Digital\Src\LM75.c</FilePath>
+            </File>
+            <File>
+              <FileName>LM75.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\UniversalShieldDrivers\Digital\Inc\LM75.h</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>UniversalShield/Misc</GroupName>
