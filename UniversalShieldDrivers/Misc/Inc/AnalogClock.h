@@ -13,13 +13,12 @@
 #define CLOCK_COLOR_EXT 			TFT_COLOR_Silver			//Цвет внешнего радиуса часов
 #define CLOCK_COLOR_INT 			TFT_COLOR_Silver			//Цвет внутреннего радиуса часов
 #define CLOCK_COLOR_NUMBERS 	TFT_COLOR_Yellow			//Цвет чисел и точек внутри часов
-#define CLOCK_COLOR_BACK TFT_COLOR_Black						//Цвет фона часов
 #define CLOCK_COLOR_SECONDARROW TFT_COLOR_Red				//Цвет секундной стрелки
 #define CLOCK_COLOR_MINUTEARROW TFT_COLOR_White			//Цвет минутной стрелки
 #define CLOCK_COLOR_HOURARROW TFT_COLOR_White				//Цвет часовой стрелки
 
 /* Прототипы функций */
-void clockInit(void); 														//Инициализация циферблата часов
-void printTime(uint8_t h, uint8_t m, uint8_t s); 	//Печать текущего времени на экране
+void clockInit(uint16_t backColor); 								//Инициализация циферблата часов
+void printTime(uint8_t h, uint8_t m, uint8_t s); 		//Печать текущего времени на экране
 
 #endif

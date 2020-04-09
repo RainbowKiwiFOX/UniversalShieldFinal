@@ -13,8 +13,11 @@ static float CLOCK_getfi(uint16_t angle) {
 	return angle*3.14141596f/180.0f;
 }
 
+static uint16_t _backColor;
+
 /* Инициализация циферблата часов */
-void clockInit(void) {
+void clockInit(uint16_t backColor) {
+	_backColor = backColor;
 	/* Рисование внешней и внутренней окружностей */
 	TFT_drawCircle(CLOCK_X, CLOCK_Y, CLOCK_RADIUS_EXT, 2, CLOCK_COLOR_EXT);
 	TFT_drawCircle(CLOCK_X, CLOCK_Y, CLOCK_RADIUS_INT, 3, CLOCK_COLOR_INT);
@@ -27,14 +30,14 @@ void clockInit(void) {
 
 	/* Расстановка значений часов */
 	TFT_setColor(CLOCK_COLOR_NUMBERS);
-	TFT_setTextBackColor(CLOCK_COLOR_BACK);
+	TFT_setTextBackColor(_backColor);
 	TFT_setFontSize(2);
 	TFT_print(CLOCK_X-8+CLOCK_RADIUS_NUMS, CLOCK_Y-7,		"3");
 	TFT_print(CLOCK_X-4, CLOCK_Y+CLOCK_RADIUS_NUMS-12,	"6");
 	TFT_print(CLOCK_X-CLOCK_RADIUS_NUMS, CLOCK_Y-7,			"9");
 	TFT_print(CLOCK_X-11, CLOCK_Y-CLOCK_RADIUS_NUMS-1,	"12");
 	/* Стирание стрелок если таковые имелись */
-	TFT_fillCircle(CLOCK_X, CLOCK_Y, CLOCK_ARROW_LENGTH, CLOCK_COLOR_BACK);
+	TFT_fillCircle(CLOCK_X, CLOCK_Y, CLOCK_ARROW_LENGTH, _backColor);
 }
 
 /* Печать текущего времени на экране */
@@ -44,9 +47,9 @@ void printTime(uint8_t h, uint8_t m, uint8_t s) {
 	static uint8_t oldMArrow = 0;
 	static uint8_t oldHArrow = 0;
 	/* Стирание старых стрелок */
-	drawSecondArrow(oldSArrow, CLOCK_COLOR_BACK);
-	drawMinuteArrow(oldMArrow, CLOCK_COLOR_BACK);
-	drawHourArrow(oldHArrow, CLOCK_COLOR_BACK);
+	drawSecondArrow(oldSArrow, _backColor);
+	drawMinuteArrow(oldMArrow, _backColor);
+	drawHourArrow(oldHArrow, _backColor);
 	/* Рисование стрелок */
 	drawSecondArrow(s, CLOCK_COLOR_SECONDARROW);
 	drawMinuteArrow(m, CLOCK_COLOR_MINUTEARROW);

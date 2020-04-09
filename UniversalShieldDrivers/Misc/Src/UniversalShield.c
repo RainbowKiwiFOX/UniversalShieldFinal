@@ -14,16 +14,19 @@
 
 /* Функции */
 
+/* Прочее */
+#define BACKGROUND_COLOR TFT_COLOR_Gray //Цвет фона
+
 /* Главная функция */
 void US_main(void) {
 	/* Инициализация дисплея и тачскрина */
 	TFT_init(TFT_ORIENT_LANDSCAPE, &hspi1);
 	XPT2046_init(&hspi1, XPT2046_LANDSCAPE, 320, 240);
-	TFT_fillDisplay(TFT_COLOR_Black); //Заливка дисплея чёрным
+	TFT_fillDisplay(BACKGROUND_COLOR); //Заливка дисплея чёрным
 	
-	clockInit(); //Инициализация аналоговых часов
+	clockInit(BACKGROUND_COLOR); //Инициализация аналоговых часов
 	//TODO: В инициализацию класть фон и координаты часов
-	TFT_setTextBackColor(TFT_COLOR_Black); //Чёрный фон текста на экране
+	TFT_setTextBackColor(BACKGROUND_COLOR); //Чёрный фон текста на экране
 	char weekdays[7][23] = {"Понедельник","    Вторник","      Среда","    Четверг","    Пятница","    Суббота","Воскресение"};
 	while(1) {
 		uint8_t sec = HAL_GetTick()/1000%60;
