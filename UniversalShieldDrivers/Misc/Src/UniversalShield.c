@@ -1,7 +1,6 @@
 #include "UniversalShield.h"
 /* Библиотеки для работы с периферией */
 #include "spi.h"
-#include "usart.h"
 /* Библиотеки для работы с дисплеем */
 #include "BD663474.h"
 #include "XPT2046.h"
@@ -9,39 +8,11 @@
 #include "DisplayButtons.h" //Экранные кнопки
 #include "AnalogClock.h"		//Аналоговые часы
 #include <stdio.h>					//Стандартный ввод/вывод
-#include <stdarg.h>					//Стандартные аргументы
 /* Прототипы функций */
 
 /* Глобальные переменные */
-void (*printPurpose)(char); //Указатель на функцию печати текста
+
 /* Функции */
-//TODO: Вынести эти функции в отдельный файл
-//Печать символа в UART
-void UART_printChar(char c) {
-	uint8_t b[1] = {c};
-	HAL_UART_Transmit(&huart2, b, 1, 0xFF);
-}
-//Стандартная функция печатиы
-int fputc(int c, FILE * stream) {
-	printPurpose(c);
-	return c; 
-}
-//Форматированная печать на дисплей
-void TFT_printf(const char * __restrict format, ...) {
-	printPurpose = TFT_printChar;
-	va_list argptr;
-	va_start(argptr, format);
-	vfprintf(stderr, format, argptr);
-	va_end(argptr);
-}
-//Форматированная печать в UART
-void UART_printf(const char * __restrict format, ...) {
-	printPurpose = UART_printChar;
-	va_list argptr;
-	va_start(argptr, format);
-	vfprintf(stderr, format, argptr);
-	va_end(argptr);
-}
 
 /* Главная функция */
 void US_main(void) {
