@@ -11,8 +11,9 @@
 #include "LM75.h"						//Цифровой датчик температуры
 #include "DS3231.h"					//Часы реального времени
 #include <stdio.h>					//Стандартный ввод/вывод
+#include "TaskManager.h"		//Диспетчер задач
 /* Прототипы функций */
-
+void standbyMode(callStatus_t s, eventStates_t *es);
 /* Глобальные переменные */
 
 /* Функции */
@@ -31,31 +32,32 @@ void US_main(void) {
 	clockInit(BACKGROUND_COLOR); //Инициализация аналоговых часов
 	RTC_init(&hi2c1);	//Инициализация RTC
 	
-	char weekdays[7][23] = {"Понедельник","    Вторник","      Среда","    Четверг","    Пятница","    Суббота","Воскресение"};
-	
-	RTC_alarm1Set((RTC_time){45,42,18},(RTC_date){0,0,0,0},A1_whenHMS);
-	RTC_alarm1On();
-	
+	/* Регистрация состояния */
+	registerState(standbyMode_s, (state_t){standbyMode,500});
+	setCurrentState(standbyMode_s);
 	while(1) {
-		RTC_time time = RTC_getTime();
-		RTC_date date = RTC_getDate();
-		
-		printAnalogTime(time.hour,time.min,time.sec);
-		
-		TFT_setColor(TFT_COLOR_Silver);
-		TFT_setFontSize(3);
-		TFT_setCursor(178,0);
-		TFT_printf("%02d.%02d.%02d", date.day, date.month, date.year);
-		TFT_setCursor(232,42);
-		TFT_printf("%02d%c%02d",time.hour,time.sec%2 ? ':' : ' ',time.min);
-		TFT_setFontSize(2);
-		TFT_setCursor(189,24);
-		TFT_printf("%11s",weekdays[date.weekday-1]);
-		
-		TFT_setCursor(200, 200);
-		TFT_printf("%3.2f*C %c", LM75_getTemperature(&hi2c1,LM75_DEFAULTADDR), RTC_alarm1IsBell() ? 'A':' ');
-		HAL_Delay(1000);
+		taskManagerTick();
 	}
+	//TODO: Календарь, установка времени и даты, рисование, график изменения температуры, осциллограф по звуку, тестирование пищалки, светодиода, ик-приёмника, освещённости, микрофона
+}
+
+void standbyMode(callStatus_t s, eventStates_t *es) {
+	const char weekdays[7][23] = {"Понедельник","    Вторник","      Среда","    Четверг","    Пятница","    Суббота","Воскресение"};
+	RTC_time time = RTC_getTime();
+	RTC_date date = RTC_getDate();
 	
-	//TODO: Диспетчеризация задач, определение состояний и событий
+	printAnalogTime(time.hour,time.min,time.sec);
+	
+	TFT_setColor(TFT_COLOR_Silver);
+	TFT_setFontSize(3);
+	TFT_setCursor(178,0);
+	TFT_printf("%02d.%02d.%02d", date.day, date.month, date.year);
+	TFT_setCursor(232,42);
+	TFT_printf("%02d%c%02d",time.hour,time.sec%2 ? ':' : ' ',time.min);
+	TFT_setFontSize(2);
+	TFT_setCursor(189,24);
+	TFT_printf("%11s",weekdays[date.weekday-1]);
+	
+	TFT_setCursor(200, 200);
+	TFT_printf("%3.2f*C %c", LM75_getTemperature(&hi2c1,LM75_DEFAULTADDR), RTC_alarm1IsBell() ? 'A':' ');
 }

@@ -445,6 +445,16 @@
               <FileType>1</FileType>
               <FilePath>..\UniversalShieldDrivers\Misc\Src\Printer.c</FilePath>
             </File>
+            <File>
+              <FileName>TaskManager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\UniversalShieldDrivers\Misc\Src\TaskManager.c</FilePath>
+            </File>
+            <File>
+              <FileName>TaskManager.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\UniversalShieldDrivers\Misc\Inc\TaskManager.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
