@@ -2,9 +2,9 @@
 #include "BD663474.h"
 #include <math.h>
 
-static void drawSecondArrow(uint8_t s, uint16_t color);	//Рисование секундной стрелки
-static void drawMinuteArrow(uint8_t m, uint16_t color);	//Рисование минутной стрелки
-static void drawHourArrow(uint8_t h, uint16_t color); 	//Рисование часовой стрелки
+static void drawSecondArrow(uint8_t s, uint16_t color);						//Рисование секундной стрелки
+static void drawMinuteArrow(uint8_t m, uint16_t color);						//Рисование минутной стрелки
+static void drawHourArrow(uint8_t h, uint8_t m, uint16_t color); 	//Рисование часовой стрелки
 
 static uint16_t CLOCK_correctAngle(uint16_t angle) {
 	return ((360-angle+90));
@@ -49,11 +49,11 @@ void printAnalogTime(uint8_t h, uint8_t m, uint8_t s) {
 	/* Стирание старых стрелок */
 	drawSecondArrow(oldSArrow, _backColor);
 	drawMinuteArrow(oldMArrow, _backColor);
-	drawHourArrow(oldHArrow, _backColor);
+	drawHourArrow(oldHArrow, oldMArrow, _backColor);
 	/* Рисование стрелок */
 	drawSecondArrow(s, CLOCK_COLOR_SECONDARROW);
 	drawMinuteArrow(m, CLOCK_COLOR_MINUTEARROW);
-	drawHourArrow(h, CLOCK_COLOR_HOURARROW);
+	drawHourArrow(h, m, CLOCK_COLOR_HOURARROW);
 	/* Запоминание предыдущих значений стрелок */
 	oldSArrow = s;
 	oldMArrow = m;
@@ -89,19 +89,21 @@ static void drawMinuteArrow(uint8_t m, uint16_t color) {
 	TFT_drawLine(x3,y3,x0,y0,1,color);
 }
 /* Рисование часовой стрелки */
-static void drawHourArrow(uint8_t h, uint16_t color) {
+static void drawHourArrow(uint8_t h, uint8_t m, uint16_t color) {
+	//Преобразование часов в деление круга на 60
+	h = 60/12*(h%12)+5.0f/60.0f*m;
 	//Вычисление вершин четырёхугольника
 	uint16_t x0,y0,x1,y1,x2,y2,x3,y3;
-	float fi = CLOCK_getfi(CLOCK_correctAngle(h*30));
+	float fi = CLOCK_getfi(CLOCK_correctAngle(h*6));
 	x0 = CLOCK_X+(CLOCK_ARROW_LENGTH*0.5)*cos(fi);
 	y0 = CLOCK_Y-(CLOCK_ARROW_LENGTH*0.5)*sin(fi);
-	fi = CLOCK_getfi(CLOCK_correctAngle(h*30+90));
+	fi = CLOCK_getfi(CLOCK_correctAngle(h*6+90));
 	x1 = CLOCK_X+(CLOCK_ARROW_LENGTH/8)*cos(fi);
 	y1 = CLOCK_Y-(CLOCK_ARROW_LENGTH/8)*sin(fi);
-	fi = CLOCK_getfi(CLOCK_correctAngle(h*30+180));
+	fi = CLOCK_getfi(CLOCK_correctAngle(h*6+180));
 	x2 = CLOCK_X+(CLOCK_ARROW_LENGTH/8)*cos(fi);
 	y2 = CLOCK_Y-(CLOCK_ARROW_LENGTH/8)*sin(fi);
-	fi = CLOCK_getfi(CLOCK_correctAngle(h*30+270));
+	fi = CLOCK_getfi(CLOCK_correctAngle(h*6+270));
 	x3 = CLOCK_X+(CLOCK_ARROW_LENGTH/8)*cos(fi);
 	y3 = CLOCK_Y-(CLOCK_ARROW_LENGTH/8)*sin(fi);
 	TFT_drawLine(x0,y0,x1,y1,1,color);
