@@ -18,7 +18,7 @@
 /* Функции */
 
 /* Прочее */
-#define BACKGROUND_COLOR TFT_COLOR_Gray //Цвет фона
+#define BACKGROUND_COLOR TFT_COLOR_Black //Цвет фона
 
 /* Главная функция */
 void US_main(void) {
@@ -32,6 +32,9 @@ void US_main(void) {
 	RTC_init(&hi2c1);	//Инициализация RTC
 	
 	char weekdays[7][23] = {"Понедельник","    Вторник","      Среда","    Четверг","    Пятница","    Суббота","Воскресение"};
+	
+	RTC_alarm1Set((RTC_time){45,42,18},(RTC_date){0,0,0,0},A1_whenHMS);
+	RTC_alarm1On();
 	
 	while(1) {
 		RTC_time time = RTC_getTime();
@@ -50,7 +53,7 @@ void US_main(void) {
 		TFT_printf("%11s",weekdays[date.weekday-1]);
 		
 		TFT_setCursor(200, 200);
-		TFT_printf("%3.2f*C", LM75_getTemperature(&hi2c1,LM75_DEFAULTADDR));
+		TFT_printf("%3.2f*C %c", LM75_getTemperature(&hi2c1,LM75_DEFAULTADDR), RTC_alarm1IsBell() ? 'A':' ');
 		HAL_Delay(1000);
 	}
 	
