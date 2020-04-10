@@ -15,6 +15,13 @@ typedef enum {
 	alarm1Bell_e,		//Срабатывание будильника 1
 	alarm2Bell_e,		//Срабатывание будильника 2
 } event_t;
+/* Статусы событий */
+typedef enum {
+	noHappen,			//Не произошло
+	happen,				//Произошло
+	preProcessed,	//Обработано обработчиком прерываний
+} eventStates_t;
+
 /* Состояния конечного автомата */
 #define noState_s 0
 typedef enum {
@@ -26,12 +33,6 @@ typedef enum {
 	initial,
 	secondary
 } callStatus_t;
-/* Статусы событий */
-typedef enum {
-	noHappen,			//Не произошло
-	happen,				//Произошло
-	preProcessed,	//Обработано обработчиком прерываний
-} eventStates_t;
 /* Структура состояний конечного автомата */
 typedef struct {
 	void (*function)(callStatus_t status, eventStates_t *eventStates);	//Указатель на функцию

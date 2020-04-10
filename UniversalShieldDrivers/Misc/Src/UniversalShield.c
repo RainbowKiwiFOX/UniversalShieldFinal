@@ -26,16 +26,16 @@ void US_main(void) {
 	/* Инициализация дисплея и тачскрина */
 	TFT_init(TFT_ORIENT_LANDSCAPE, &hspi1);
 	XPT2046_init(&hspi1, XPT2046_LANDSCAPE, 320, 240);
-	TFT_fillDisplay(BACKGROUND_COLOR); //Заливка дисплея чёрным
-	TFT_setTextBackColor(BACKGROUND_COLOR); //Чёрный фон текста на экране
-	
-	clockInit(BACKGROUND_COLOR); //Инициализация аналоговых часов
 	RTC_init(&hi2c1);	//Инициализация RTC
 	
-	/* Регистрация состояния */
+	/* Регистрация состояний */
 	registerState(standbyMode_s, (state_t){standbyMode,500});
+	
+	//Установка текущего состояния
 	setCurrentState(standbyMode_s);
+	
 	while(1) {
+		//Обработка событий и вызов состояний
 		taskManagerTick();
 	}
 	//TODO: Календарь, установка времени и даты, рисование, график изменения температуры, осциллограф по звуку, тестирование пищалки, светодиода, ик-приёмника, освещённости, микрофона
@@ -43,6 +43,14 @@ void US_main(void) {
 
 void standbyMode(callStatus_t s, eventStates_t *es) {
 	const char weekdays[7][23] = {"Понедельник","    Вторник","      Среда","    Четверг","    Пятница","    Суббота","Воскресение"};
+	
+	//Если функция была вызвана впервые, то
+	if(s == initial) {
+		TFT_fillDisplay(BACKGROUND_COLOR); 			//Заливка дисплея чёрным
+		TFT_setTextBackColor(BACKGROUND_COLOR); //Чёрный фон текста на экране
+		clockInit(BACKGROUND_COLOR); 						//Инициализация аналоговых часов
+	}
+	
 	RTC_time time = RTC_getTime();
 	RTC_date date = RTC_getDate();
 	
