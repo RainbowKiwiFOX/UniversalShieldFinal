@@ -39,12 +39,15 @@
 void setCursor(uint16_t pos, touchStates ts);
 void incTimeAndDate(uint16_t i, touchStates ts);
 void decTimeAndDate(uint16_t i, touchStates ts);
+void saveTimeAndDate(uint16_t i, touchStates ts);
 /* Глобальные переменные */
 //Значения времени и даты из RTC
 extern RTC_time time;
 extern RTC_date date;
 //Позиция курсора
 static uint8_t cursorPos = 0;
+//Максимальные значения дней в месяцах
+uint8_t monthsMax[] = {31,28,31,30,31,30,31,31,30,31,30,31};
 //Кнопки перемещения курсора по времени и дате
 static button_t cursorMove[] = {
 	//ID	posX 	 				poxY			Длина Высота	Вызов функции
@@ -165,6 +168,33 @@ void decTimeAndDate(uint16_t i, touchStates ts) {
 	printTime();
 	printDate();
 }
+/* Сохранение значений в RTC */
+void saveTimeAndDate(uint16_t i, touchStates ts) {
+	if (ts != T_pressed) return; //Игнорирование лишних нажатий
+	
+	/* Вычисление дня недели из указанной даты */
+	uint16_t days = 0; //Количество дней прошедших с 1 января 2000 года (суббота)
+	//Подсчёт дней в предыдущих годах
+	for(uint8_t y = 0; y < date.year; y++) {
+		days += 365 + !(y%4); //Прибавление 365 дней и 1 если год високосный
+	}
+	//Подсчёт дней в предыдущих месяцах
+	for(uint8_t m = 1; m < date.month; m++) {
+		days += monthsMax[m-1];
+	}
+	if((date.month > 2) && (date.year%4)) days++;	//Если текущий год високосный и февраль уже был, то +1 к дням
+	//Прибавление текущего дня календаря
+	days += date.day;
+	
+	/* Вычисление дня недели из количества дней прошедших с 1 января 2000 года (суббота) */
+	days -= 2; //Уменьшение дней до понедельника 3 января 2000 года
+	date.weekday = days%7+1; //Вычисление дня недели и смещение +1 дня того, чтобы понедельник был днём №1 (RTC хранит значения от 1 до 7)
+	
+	/* Отправка времени и даты в RTC */
+	RTC_setTime(time);
+	RTC_setDate(date);
+}
+
 /* Режим установки времени и даты */
 void timeAndDateSetupMode(callStatus_t s, eventStates_t *es) {
 	//Если функция была вызвана впервые, то
