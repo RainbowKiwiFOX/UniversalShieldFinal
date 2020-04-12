@@ -48,12 +48,17 @@ void buttonsTouchHandler(button_t *buttons, uint8_t count, touch_t t) {
 	//Циклическая проверка координат нажатия и кнопки	
 	while(count--) {
 		if(
-			(t.x >= buttons[count].posX)  													//Позиция X больше или равна началу кнопки
+			   (t.x >= buttons[count].posX)  												//Позиция X больше или равна началу кнопки
 			&& (t.x <= buttons[count].posX+buttons[count].length) 	//Позиция X меньше или равна концу кнопки
 			&& (t.y >= buttons[count].posY)  												//Позиция Y больше или равна началу кнопки
-			&& (t.y <= buttons[count].posY+buttons[count].length)		//Позиция Y меньше или равна концу кнопки
+			&& (t.y <= buttons[count].posY+buttons[count].width)		//Позиция Y меньше или равна концу кнопки
 		) {
 			buttons[count].action(buttons[count].id, t.state); //Вызов функции обработки нажатия на кнопку
 		}
 	}
+}
+
+//Функция визуализации обычной кнопки
+void visualizeButton(button_t button, uint16_t color) {
+	TFT_drawRectangle(button.posX,button.posY, button.length, button.width, 1, color);
 }

@@ -32,5 +32,6 @@ typedef struct {
 
 void printButtons(visualButton_t *buttons, uint8_t count);
 void buttonsTouchHandler(button_t *buttons, uint8_t count, touch_t t);
+void visualizeButton(button_t button, uint16_t color);
 
 #endif
