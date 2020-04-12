@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F446xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\UniversalShieldDrivers\Misc\Inc;..\UniversalShieldDrivers\Display\Inc;..\UniversalShieldDrivers\Digital\Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\UniversalShieldDrivers\Misc\Inc;..\UniversalShieldDrivers\Display\Inc;..\UniversalShieldDrivers\Digital\Inc;..\Clock\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -434,11 +434,6 @@
               <FileName>UniversalShield.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\UniversalShieldDrivers\Misc\Src\UniversalShield.c</FilePath>
-            </File>
-            <File>
-              <FileName>AnalogClock.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UniversalShieldDrivers\Misc\Src\AnalogClock.c</FilePath>
             </File>
             <File>
               <FileName>Printer.c</FileName>
@@ -624,6 +619,26 @@
               <FileName>system_stm32f4xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/system_stm32f4xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/Clock</GroupName>
+          <Files>
+            <File>
+              <FileName>AnalogClock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Clock\Src\AnalogClock.c</FilePath>
+            </File>
+            <File>
+              <FileName>StandbyMode.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Clock\Src\StandbyMode.c</FilePath>
+            </File>
+            <File>
+              <FileName>TimeAndDateSetupMode.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Clock\Src\TimeAndDateSetupMode.c</FilePath>
             </File>
           </Files>
         </Group>
