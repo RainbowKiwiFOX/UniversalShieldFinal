@@ -33,7 +33,8 @@ static uint16_t _width, _height;
 static SPI_HandleTypeDef *_spi;
 //Текущее состояние нажатия на тачскрин
 static touchStates touchState = T_noTouch;
-
+//Время удерживания экрана
+static uint32_t startPressTime = 0;
 //Применение безопасных параметров SPI
 #ifdef XPT2046_SPI_PARAM_CONTROL
 static void _spi_init(void) {
@@ -64,15 +65,21 @@ static void XPT2046_TouchUnselect(void)
 }
 
 touchStates XPT2046_getTouchState(void) {
-	//Если состояние "нажат", то смена состояние на "короткое удерживание" и возврат "нажат"
+	//Если состояние "нажат", то смена состояние на "удерживание" и возврат "нажат"
 	if(touchState == T_pressed) {
-		touchState = T_shortHoldDown;
+		touchState = T_holdDown;
 		return T_pressed;
 	}
 	//Если состояние "отпущен", то смена состояния на "нет касания" и возврат "отпущен"
 	if(touchState == T_released) {
 		touchState = T_noTouch;
 		return T_released;
+	}
+	//Если состояние "длинное удержание", то смена состояния на "короткое удержание", уменьшение счётчика и возврат "длинное удержание"
+	if(touchState == T_longHoldDown) {
+		startPressTime = HAL_GetTick()-XPT2046_LONGPRESS_TIME+XPT2046_LONGPRESS_PERIOD;
+		touchState = T_holdDown;
+		return T_longHoldDown;
 	}
 	//Иначе просто возврат состояния
 	return touchState;
@@ -148,15 +155,13 @@ touch_t XPT2046_getTouch(void) {
 		return touch;
 	}
 	
-	static uint32_t startPressTime = 0;
-	
 	//Установка состояния "нажат" если было состояние "нет нажатия"
 	if(touchState == T_noTouch) {
 		touchState = T_pressed;
 		startPressTime = HAL_GetTick(); //Фиксация времени нажатия на экран
 	}
 	//Установка состояния "длинное удерживание" если со времени нажатия прошло XPT2046_LONGPRESS_TIME мс
-	if(touchState == T_shortHoldDown) {
+	if(touchState == T_holdDown) {
 		if(HAL_GetTick()-startPressTime > XPT2046_LONGPRESS_TIME) touchState = T_longHoldDown;
 	}
 	/* Вычисление значений координат */

@@ -38,7 +38,9 @@
 //При меньшем значении функция вернёт статус T_noTouch
 #define XPT2046_MIN_SAMPLES 8
 //Время длинного удерживания в мс
-#define XPT2046_LONGPRESS_TIME 2500
+#define XPT2046_LONGPRESS_TIME 1200
+//Через какой промежуток времени повторно возвращать T_longHoldDown
+#define XPT2046_LONGPRESS_PERIOD 100
 
 /* Ориентации дисплея */
 typedef enum {
@@ -53,8 +55,8 @@ typedef enum {
 typedef enum {
 	T_noTouch,				//Нет нажатия
 	T_pressed,				//Нажат (передний фронт /)
-	T_shortHoldDown,	//Короткое удерживание (-)
-	T_longHoldDown,		//Длинное удерживание (-)
+	T_holdDown,				//Удерживание (-)
+	T_longHoldDown,		//Длинное удерживание (-) (Появляется сначала после XPT2046_LONGPRESS_TIME мс, а затем каждые XPT2046_LONGPRESS_PERIOD мс
 	T_released, 			//Отпущено (задний фронт \)
 } touchStates;
 //Объект, содержащий координаты и состояние
