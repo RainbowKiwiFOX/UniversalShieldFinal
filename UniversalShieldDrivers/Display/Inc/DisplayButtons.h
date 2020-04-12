@@ -23,7 +23,7 @@ typedef struct {
 } button_t;
 //Структура кнопки
 typedef struct {
-	button_t button;			//Основная кнопка
+	button_t *button;			//Основная кнопка
 	uint8_t form;					//Форма кнопки
 	uint16_t borderСolor;	//Цвет линии кнопки
 	uint8_t borderdWidth;	//Ширина линии кнопки

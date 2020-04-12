@@ -11,7 +11,7 @@
 #define getMeanX(size, fontSize) ((320-(size*5*fontSize+(size-1)*fontSize*1))/2)
 //Настройки вывода времени
 #define fontSize 4											//Размер шрифта
-#define startX getMeanX(8,fontSize)			//Расчёт начального X печати времени
+#define startX 120			//Расчёт начального X печати времени
 #define startY 80
 #define startYDate	startY+7*fontSize+30
 
@@ -58,11 +58,16 @@ static button_t cursorMove[] = {
 	{  4 ,startX+70,	startYDate,		48  ,30		, setCursor},	//Месяц
 	{  5 ,startX+140, startYDate, 	48  ,30		, setCursor},	//Год
 };
-//Кнопки инкремента и декремента значений
-static button_t upDown[] = {
-	//ID	posX poxY		Длина 							Высота								Вызов функции
-	{  0 ,0, 		0, 	curLength+curWidth  ,curHeight+curWidth		, incTimeAndDate}, //Увеличить
-	{  1 ,0,		0, 	curLength+curWidth  ,curHeight+curWidth		, decTimeAndDate}, //Уменьшить
+//Кнопки инкремента и декремента значений, "сохранить"
+static button_t upDownSave[] = {
+	//ID	posX 					 poxY		Длина 							Высота								Вызов функции
+	{  0 , 0, 						0, 	curLength+curWidth  ,curHeight+curWidth		, incTimeAndDate}, //Увеличить
+	{  1 , 0,							0, 	curLength+curWidth  ,curHeight+curWidth		, decTimeAndDate}, //Уменьшить
+	{  3 ,getMeanX(9,3)-5,200, 	 170,									31, 								saveTimeAndDate}, //Сохранение
+};
+//Визуальная часть кнопки "Сохранить"
+static visualButton_t save[] = {
+	{&upDownSave[2], roundRectangle_f, TFT_COLOR_Silver, 2, TFT_COLOR_none}
 };
 /* Функция печати времени на экране */
 void printTime(void) {
@@ -96,10 +101,10 @@ void setCursor(uint16_t pos, touchStates ts) {
 	//Рисование нового курсора
 	printCursor(TEXT_COLOR);
 	//Перемещение кнопок инкремента и декремента в зависимости от положения курсора
-	upDown[0].posX = curX0;
-	upDown[0].posY = curY0-curHeight;
-	upDown[1].posX = curX0;
-	upDown[1].posY = curY0+curDistance;
+	upDownSave[0].posX = curX0;
+	upDownSave[0].posY = curY0-curHeight;
+	upDownSave[1].posX = curX0;
+	upDownSave[1].posY = curY0+curDistance;
 }
 
 /* Увеличение значения даты или времени в зависимости от значения курсора */
@@ -210,8 +215,10 @@ void timeAndDateSetupMode(callStatus_t s, eventStates_t *es) {
 		TFT_setFontSize(2);
 		TFT_print(16,4, "Установка времени и даты");
 		TFT_setFontSize(3);
-		TFT_print(getMeanX(6,3), 30, "Время:");
-		TFT_print(getMeanX(4,3), 140, "Дата:");
+		TFT_print(10, startY+4, "Время");
+		TFT_print(10, startYDate+4, "Дата");
+		TFT_print(getMeanX(9,3), 205, "Сохранить");
+		printButtons(save, sizeof(save)/sizeof(visualButton_t));
 		TFT_setFontSize(fontSize);
 		printTime();	//Начальная печать времени
 		printDate();	//Начальная печать даты
@@ -220,5 +227,5 @@ void timeAndDateSetupMode(callStatus_t s, eventStates_t *es) {
 	touch_t t = XPT2046_getTouch();
 	//Обработка нажатия на экран
 	buttonsTouchHandler(cursorMove, sizeof(cursorMove)/sizeof(button_t), t);
-	buttonsTouchHandler(upDown, sizeof(upDown)/sizeof(button_t), t);
+	buttonsTouchHandler(upDownSave, sizeof(upDownSave)/sizeof(button_t), t);
 }
