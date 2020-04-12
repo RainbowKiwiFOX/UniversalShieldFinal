@@ -312,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>6</Optim>
+            <Optim>7</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -449,11 +449,6 @@
               <FileName>TaskManager.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\UniversalShieldDrivers\Misc\Src\TaskManager.c</FilePath>
-            </File>
-            <File>
-              <FileName>TaskManager.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\UniversalShieldDrivers\Misc\Inc\TaskManager.h</FilePath>
             </File>
           </Files>
         </Group>
