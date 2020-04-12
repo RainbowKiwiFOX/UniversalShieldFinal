@@ -5,27 +5,58 @@
 #include "DS3231.h"					//Часы реального времени
 #include "DisplayButtons.h" //Экранные кнопки
 
+
+/* Макроподстановки */
+//Настройки вывода времени
+#define fontSize 4																		//Размер шрифта
+#define startX ((320-(8*5*fontSize+7*fontSize*1))/2)	//Расчёт начального X печати времени
+
+#define curStartX (startX+6)						//Расчёт начального X печати курсора
+#define curStartY 71										//Начальный Y печати курсора
+#define curStep 72 											//Шаг перемещения курсора
+#define curWidth 3											//Ширина линии курсора
+#define curLength 30										//Длина курсора
+#define curHeight (curLength/2)					//Высота курсора
+#define curDistance (11*fontSize)				//Расстояние между верхней и нижней стрелочкой
+//Точки вершин треугольников курсора
+#define curX0 (curStartX+cursorPos*curStep)
+#define curY0 curStartY
+#define curX1 curX0+curLength/2
+#define curY1_up curStartY-curHeight
+#define curY1_down curStartY+curHeight
+#define curX2 curX0+curLength
+#define curY2 curStartY
+
+#define BACKGROUND_COLOR TFT_COLOR_Blue	//Цвет фона экрана
+#define TEXT_COLOR TFT_COLOR_White			//Цвет текста на экране
+
+/* Глобальные переменные */
 //Значения времени и даты из RTC
 extern RTC_time time;
 extern RTC_date date;
+//Позиция курсора
+static uint8_t cursorPos = 0;
 
-/* Режим установки времени и даты */
-#define startX (320-(8*5*4+7*4*1))/2
-uint8_t cursorPos = 0;
-void setCursor(uint16_t pos) {
-	//TODO: Исправить это говноляпство
-	#define dlina 30
-	#define visota 15
-	#define shag 72
-	#define startY 71
-	//Стирание предыдущих значков
-	TFT_drawTriangle(startX + cursorPos*shag+6, startY, startX + cursorPos*shag + dlina/2+6, startY-visota, startX + cursorPos*shag + dlina+6, startY, 3, TFT_COLOR_Blue);     
-	TFT_drawTriangle(startX + cursorPos*shag+6, startY+43, startX + cursorPos*shag + dlina/2+6, startY+43+visota, startX + cursorPos*shag + dlina+6, startY+43, 3, TFT_COLOR_Blue);     
-	cursorPos = pos;
-	//Рисование новых стрелочек
-	TFT_drawTriangle(startX + pos*shag+6, startY, startX + pos*shag + dlina/2+6, startY-visota, startX + pos*shag + dlina+6, startY, 3, TFT_COLOR_White);     
-	TFT_drawTriangle(startX + cursorPos*shag+6, startY+43, startX + cursorPos*shag + dlina/2+6, startY+43+visota, startX + cursorPos*shag + dlina+6, startY+43, 3, TFT_COLOR_White);     
+
+/* Функция печати курсора указанным цветом */
+void printCursor(uint16_t color) {
+	//Треугольник вверх
+	TFT_drawTriangle(curX0, curY0, curX1, curY1_up, curX2, curY2, curWidth, color);
+	//Треугольник вниз
+	TFT_drawTriangle(curX0, curY0+curDistance, curX1, curY1_down+curDistance, curX2, curY2+curDistance, curWidth, color);
 }
+
+/* Установка значения и перемещение курсора на экране */
+void setCursor(uint16_t pos) {
+	//Стирание предыдущего курсора
+	printCursor(BACKGROUND_COLOR);
+	//Обновление положения курсора
+	cursorPos = pos;
+	//Рисование нового курсора
+	printCursor(TEXT_COLOR);
+}
+
+/* Увеличение значения даты или времени в зависимости от значения курсора */
 void incTimeAndDate(uint16_t i) {
 	switch(cursorPos) {
 		case 0: {
@@ -42,6 +73,7 @@ void incTimeAndDate(uint16_t i) {
 		}
 	}
 }
+/* Уменьшение значения даты или времени в зависимости от значения курсора */
 void decTimeAndDate(uint16_t i) {
 	switch(cursorPos) {
 		case 0: {
@@ -75,10 +107,10 @@ void timeAndDateSetupMode(callStatus_t s, eventStates_t *es) {
 	};
 	//Если функция была вызвана впервые, то
 	if(s == initial) {
-		time = RTC_getTime(); //Обновление текущего времени
-		date = RTC_getDate();	//Обновление текущей даты
-		
-		TFT_fillDisplay(TFT_COLOR_Blue); 			//Заливка дисплея фоном
+		time = RTC_getTime(); 	//Обновление текущего времени
+		date = RTC_getDate();		//Обновление текущей даты
+		TFT_fillDisplay(BACKGROUND_COLOR); //Заливка дисплея фоном
+		setCursor(0);						//Обнуление значения курсора
 		//Рисование бара
 		TFT_fillRectangle(0,0,320,28,TFT_COLOR_Navy);
 		TFT_setTextBackColor(TFT_COLOR_none);

@@ -11,10 +11,10 @@ void TFT_printf(const char * __restrict format, ...);
 //Форматированная печать в UART
 void UART_printf(const char * __restrict format, ...);
 
-/* Режим ожидания */
+/*** Состояния ***/
+//Режим ожидания
 void standbyMode(callStatus_t s, eventStates_t *es);
-
-/* Режим установки времени и даты */
+//Режим установки времени и даты
 void timeAndDateSetupMode(callStatus_t s, eventStates_t *es);
 
 #endif
