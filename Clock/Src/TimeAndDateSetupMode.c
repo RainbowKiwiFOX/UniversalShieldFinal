@@ -10,9 +10,10 @@
 //Настройки вывода времени
 #define fontSize 4																		//Размер шрифта
 #define startX ((320-(8*5*fontSize+7*fontSize*1))/2)	//Расчёт начального X печати времени
+#define startY 80
 
 #define curStartX (startX+6)						//Расчёт начального X печати курсора
-#define curStartY 71										//Начальный Y печати курсора
+#define curStartY (startY-10)		//Начальный Y печати курсора
 #define curStep 72 											//Шаг перемещения курсора
 #define curWidth 3											//Ширина линии курсора
 #define curLength 30										//Длина курсора
@@ -28,6 +29,7 @@
 #define curY2 curStartY
 
 #define BACKGROUND_COLOR TFT_COLOR_Blue	//Цвет фона экрана
+#define BAR_COLOR	TFT_COLOR_Navy				//Цвет верхней полосы экрана
 #define TEXT_COLOR TFT_COLOR_White			//Цвет текста на экране
 
 /* Глобальные переменные */
@@ -112,16 +114,16 @@ void timeAndDateSetupMode(callStatus_t s, eventStates_t *es) {
 		TFT_fillDisplay(BACKGROUND_COLOR); //Заливка дисплея фоном
 		setCursor(0);						//Обнуление значения курсора
 		//Рисование бара
-		TFT_fillRectangle(0,0,320,28,TFT_COLOR_Navy);
+		TFT_fillRectangle(0,0,320,28,BAR_COLOR);
 		TFT_setTextBackColor(TFT_COLOR_none);
-		TFT_setColor(TFT_COLOR_White);
+		TFT_setColor(TEXT_COLOR);
 		TFT_setFontSize(2);
 		TFT_print(16,4, "Установка времени и даты");
-		TFT_setFontSize(4);
-		TFT_setTextBackColor(TFT_COLOR_Blue);
+		TFT_setFontSize(fontSize);
+		TFT_setTextBackColor(BACKGROUND_COLOR);
 	}
 	
-	TFT_setCursor(startX,80);
+	TFT_setCursor(startX,startY);
 	TFT_printf("%02d:%02d:%02d",time.hour,time.min,time.sec);
 	//Перемещение кнопок инкремента и декремента в зависимости от положения курсора
 	upDown[0].posX = startX+cursorPos*70;
