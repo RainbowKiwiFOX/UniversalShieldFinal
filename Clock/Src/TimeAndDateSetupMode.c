@@ -71,15 +71,11 @@ static visualButton_t save[] = {
 };
 /* Функция печати времени на экране */
 void printTime(void) {
-	//Закрашивание старых значений
-	TFT_fillRectangle(startX, startY, 8*5*fontSize+7*fontSize*1, 7*fontSize, BACKGROUND_COLOR);
 	TFT_setCursor(startX,startY);
 	TFT_printf("%02d:%02d:%02d",time.hour,time.min,time.sec);
 }
 /* Функция печати даты на экране */
 void printDate(void) {
-	//Закрашивание старых значений
-	TFT_fillRectangle(startX, startYDate, 8*5*fontSize+7*fontSize*1, 7*fontSize, BACKGROUND_COLOR);
 	TFT_setCursor(startX,startYDate);
 	TFT_printf("%02d.%02d.%02d",date.day,date.month,date.year);
 }
@@ -220,6 +216,7 @@ void timeAndDateSetupMode(callStatus_t s, eventState_t *es) {
 		TFT_print(getMeanX(9,3), 205, "Сохранить");
 		printButtons(save, sizeof(save)/sizeof(visualButton_t));
 		TFT_setFontSize(fontSize);
+		TFT_setTextBackColor(TFT_COLOR_Blue);
 		printTime();	//Начальная печать времени
 		printDate();	//Начальная печать даты
 	}
