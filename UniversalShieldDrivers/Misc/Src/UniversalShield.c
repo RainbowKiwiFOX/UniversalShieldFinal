@@ -17,7 +17,9 @@
 /* Прочее */
 //Обработчик нажатия на кнопку энкодера
 void encSWEventHandler(event_t event) {
-	UART_printf("SW\r\n");
+	//Смена состояния при нажатии на кнопку
+	if(getCurrentState() == standbyMode_s) setCurrentState(timeAndDateSetupMode_s);
+	else setCurrentState(standbyMode_s);
 }
 //Обработчик инкремента энкодера
 void encIncEventHandler(event_t event) {
@@ -44,13 +46,15 @@ void US_main(void) {
 	registerEvent((eventHandler_t){encIncEventHandler,encoderInc_e});
 	registerEvent((eventHandler_t){encDecEventHandler,encoderDec_e});
 	//Установка текущего состояния
-	setCurrentState(timeAndDateSetupMode_s);
+	setCurrentState(standbyMode_s);
 	
 	while(1) {
 		//Обработка событий и вызов состояний
 		taskManagerTick();
 	}
 	//TODO: Календарь, рисование, график изменения температуры, осциллограф по звуку, тестирование пищалки, светодиода, ик-приёмника, освещённости, микрофона
+	//TODO: Проверить все функции рисования библиотеки дисплея, переделать печать символа с фоном (перерисовывать фон сразу, а не в буфер), проверить круги и т.д.
+	//TODO: При нажатии на кнопку менять её контур
 }
 
 //Обработчик прерываний энкодера
