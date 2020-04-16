@@ -67,7 +67,7 @@ static button_t upDownSave[] = {
 };
 //Визуальная часть кнопки "Сохранить"
 static visualButton_t save[] = {
-	{&upDownSave[2], roundRectangle_f, TFT_COLOR_Silver, 2, TFT_COLOR_none}
+	{&upDownSave[2], roundRectangle_f, BACKGROUND_COLOR, TFT_COLOR_White, 2, TFT_COLOR_none}
 };
 /* Функция печати времени на экране */
 void printTime(void) {
@@ -225,4 +225,5 @@ void timeAndDateSetupMode(callStatus_t s, eventState_t *es) {
 	//Обработка нажатия на экран
 	buttonsTouchHandler(cursorMove, sizeof(cursorMove)/sizeof(button_t), t);
 	buttonsTouchHandler(upDownSave, sizeof(upDownSave)/sizeof(button_t), t);
+	checkActiveButtons(save, 1, t);
 }
