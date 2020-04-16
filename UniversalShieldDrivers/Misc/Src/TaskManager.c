@@ -21,7 +21,18 @@ void setCurrentState(currentState_t cs) {
 
 /* События */
 // Массив событий конечного автомата
-static eventStates_t eventStates[eventsSize];
+static eventState_t eventStates[eventsSize];
+// Массив обработчиков событий конечного автомата
+static eventHandler_t eventHandlers[eventsSize];
+
+/* Регистрация события */
+void registerEvent(eventHandler_t eh) {
+	eventHandlers[eh.callEvent] = eh;
+}
+/* Установка состояния события (событие состоялось, например)*/
+void setEventState(event_t e, eventState_t state) {
+	eventStates[e] = state;
+}
 
 /* Один тик диспетчера */
 void taskManagerTick(void) {
@@ -29,8 +40,18 @@ void taskManagerTick(void) {
 	1) Проверить все зарегистрированые события
 	2) Запустить все зарегистрированые задачи
 	3) Перейти в текущее состояние
+	4) Сбросить флаги событий
 	*/
-	
+	/* 1. Вызов обработчиков событий */
+	for(uint8_t i = 0; i < eventsSize; i++) {
+		//Если событие обработчика в истине, то вызов обработчика
+		if(eventStates[eventHandlers[i].callEvent] != noHappen) {
+			//Вызов функции обработки
+			eventHandlers[i].function(eventHandlers[i].callEvent);
+			//Событие будет сброшено при следующей итерации если не произойдёт снова
+			eventStates[eventHandlers[i].callEvent] = preProcessed; 		
+		}
+	}
 	/* 3. Переход в текущее состояние */
 	//Проверка наличия указателя состояния в массиве и время последнего вызова
 	if (HAL_GetTick()-lastCallTime >= states[currentState].callPeriod) {
@@ -41,15 +62,14 @@ void taskManagerTick(void) {
 		//Вызов функции текущего состояния
 		states[currentState].function(state, eventStates);
 	}
+	
+	/* 4. Сброс флагов событий */
+	for(uint8_t i = 0; i < eventsSize; i++) {
+		if(eventStates[i] == preProcessed) eventStates[i] = noHappen;
+	}
 }
 
-/* Массив обработчиков событий конечного автомата */
-//static eventHandler_t eventHandlers[sizeof(eventHandler_t)/sizeof(event_t)];
 
-/* Регистрация события */
-/*void registerEvent(event_t e, eventHandler_t eh) {
-	eventHandlers[e] = eh;
-}*/
 	/* Обработка событий */
 	//uint8_t eventsCounter = sizeof(eventHandlers)/sizeof(eventHandler_t); //Количество обработчиков событий
 	

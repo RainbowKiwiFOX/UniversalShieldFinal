@@ -13,8 +13,8 @@ void UART_printf(const char * __restrict format, ...);
 
 /*** Состояния ***/
 //Режим ожидания
-void standbyMode(callStatus_t s, eventStates_t *es);
+void standbyMode(callStatus_t s, eventState_t *es);
 //Режим установки времени и даты
-void timeAndDateSetupMode(callStatus_t s, eventStates_t *es);
+void timeAndDateSetupMode(callStatus_t s, eventState_t *es);
 
 #endif

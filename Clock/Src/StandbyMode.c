@@ -16,7 +16,7 @@ RTC_date date;
 const char weekdays[7][23] = {"Понедельник","    Вторник","      Среда","    Четверг","    Пятница","    Суббота","Воскресение"};
 
 /* Режим ожидания */
-void standbyMode(callStatus_t s, eventStates_t *es) {
+void standbyMode(callStatus_t s, eventState_t *es) {
 	//Если функция была вызвана впервые, то
 	if(s == initial) {
 		TFT_fillDisplay(BACKGROUND_COLOR); 			//Заливка дисплея чёрным

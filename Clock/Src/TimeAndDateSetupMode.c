@@ -201,7 +201,7 @@ void saveTimeAndDate(uint16_t i, touchStates ts) {
 }
 
 /* Режим установки времени и даты */
-void timeAndDateSetupMode(callStatus_t s, eventStates_t *es) {
+void timeAndDateSetupMode(callStatus_t s, eventState_t *es) {
 	//Если функция была вызвана впервые, то
 	if(s == initial) {
 		time = RTC_getTime(); 	//Обновление текущего времени
