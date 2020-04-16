@@ -18,6 +18,10 @@ void setCurrentState(currentState_t cs) {
 	currentState = cs;
 	lastCallTime = 0xFFFFFF;
 }
+// Получить текущее событие
+currentState_t getCurrentState(void) {
+	return currentState;
+}
 
 /* События */
 // Массив событий конечного автомата
@@ -68,32 +72,3 @@ void taskManagerTick(void) {
 		if(eventStates[i] == preProcessed) eventStates[i] = noHappen;
 	}
 }
-
-
-	/* Обработка событий */
-	//uint8_t eventsCounter = sizeof(eventHandlers)/sizeof(eventHandler_t); //Количество обработчиков событий
-	
-	//1) Перебор массива событий и вызов их обработчиков
-	/*while(eventsCounter--){
-		//Если флаг события истиный, то вызов функции обработчика с указанием события вызова
-		if(eventStates[eventHandlers[eventsCounter].callEvent]) eventHandlers[eventsCounter].function(eventHandlers[eventsCounter].callEvent);
-		//Установка флага "предварительно обработан" чтобы была возможность сбросить флаг
-		eventStates[eventHandlers[eventsCounter].callEvent] = preProcessed;
-	}*/
-	//2) Перебор задач и их вызов
-	
-	//3) Переход в текущее состояние
-	//Если текущее состояние не пустое и время вызова пришло, то вызов состояния
-	/*static uint32_t lastCallTime = 0xFFFFFF;
-	static currentState_t lastState = noState_s; 
-	if (currentState && (HAL_GetTick()-lastCallTime >= states[currentState].callPeriod)) {
-		lastCallTime = HAL_GetTick();
-		//Вызов функции. Если предыдущее состояние отлично от настоящего, то статус initial, иначе secondary
-		states[currentState].function((lastState != currentState) ? initial : secondary, eventStates);
-		lastState = currentState;
-	}*/
-	
-	/*//Сброс флагов событий
-	for(uint8_t i = 0; i < sizeof(event_t); i++) {
-		eventStates[i] = noHappen;
-	}*/

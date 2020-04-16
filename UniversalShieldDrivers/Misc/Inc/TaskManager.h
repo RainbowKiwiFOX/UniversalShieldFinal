@@ -55,6 +55,8 @@ void registerEvent(eventHandler_t eh);
 void registerState(currentState_t cs, state_t s);
 /* Установка текущего состояния */
 void setCurrentState(currentState_t cs);
+/* Получить текущее событие */
+currentState_t getCurrentState(void);
 /* Установка состояния события */
 void setEventState(event_t e, eventState_t state);
 /* Один тик диспетчера */
