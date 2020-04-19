@@ -8,8 +8,7 @@ void (*printPurpose)(char); //Указатель на функцию печат�
 
 //Печать символа в UART
 void UART_printChar(char c) {
-	uint8_t b[1] = {c};
-	HAL_UART_Transmit(&huart2, b, 1, 0xFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)&c, 1, 0xFF);
 }
 
 //Стандартная функция печатиы
