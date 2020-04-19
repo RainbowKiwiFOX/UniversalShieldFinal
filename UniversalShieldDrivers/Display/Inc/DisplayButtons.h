@@ -11,7 +11,7 @@ enum buttonForm {
 	roundRectangle_f,	//Скруглённый прямоугольник
 	circle_f					//Круг
 };
-//Структура визуальной кнопки
+//Структура  кнопки
 typedef struct {
 	uint16_t id;					//Индификатор кнопки. Может быть любое число от 0 до 65535
 	uint16_t posX;				//Позиция кнопки по X. Если это круг, то это X центра
@@ -21,7 +21,7 @@ typedef struct {
 	//Указатель на функцию, которая будет выполняться при нажатии на кнопку
 	void (*action)(uint16_t id, touchStates ts);
 } button_t;
-//Структура кнопки
+//Структура визуальной кнопки
 typedef struct {
 	button_t *button;						//Основная кнопка
 	uint8_t form;								//Форма кнопки
@@ -30,6 +30,7 @@ typedef struct {
 	uint8_t borderdWidth;				//Ширина контура кнопки
 	uint16_t fillColor;					//Цвет заливки кнопки
 } visualButton_t;
+
 
 void printButtons(visualButton_t *buttons, uint8_t count);
 void buttonsTouchHandler(button_t *buttons, uint8_t count, touch_t t);
