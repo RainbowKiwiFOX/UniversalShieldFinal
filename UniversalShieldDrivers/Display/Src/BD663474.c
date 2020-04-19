@@ -406,32 +406,33 @@ void TFT_drawLineVertical(uint16_t x, uint16_t y, uint16_t len, uint8_t size, ui
 }
 //Нарисовать окружность с центром в координате (x,y), радиусом radius и указанным цветом
 void TFT_drawCircle(uint16_t x, uint16_t y, uint16_t radius, uint8_t size, uint16_t color) {
-		#ifdef TFT_SPI_PARAM_CONTROL 
-		_spi_init(_displaySPI);
-		#endif
-   int16_t x_ = 0;
-   int16_t y_ = radius;
-   int16_t delta = 1 - 2 * radius;
-   int16_t error = 0;
-   while (y_ >= 0) {
-         TFT_fillRectangle(x + x_-size+1, y + y_-size, size, size, color);
-         TFT_fillRectangle(x + x_-size+1, y - y_, size, size, color);
-         TFT_fillRectangle(x - x_+1, y + y_-size, size, size, color);
-         TFT_fillRectangle(x - x_+1, y - y_, size, size, color);
-         error = 2 * (delta + y_) - 1;
-         if ((delta < 0) && (error <= 0)) {
-                 delta += 2 * ++x_ + 1;
-                 continue;
-         }
-         if ((delta > 0) && (error > 0)) {
-                 delta -= 2 * --y_ + 1;
-                 continue;
-         }
-         delta += 2 * (++x_ - y_--);
-     }
-    //Обновление положения курсора
-    TFT_cursorX = x;
-    TFT_cursorY = y;
+	#ifdef TFT_SPI_PARAM_CONTROL 
+	_spi_init(_displaySPI);
+	#endif
+
+	int16_t x_ = 0;
+	int16_t y_ = radius;
+	int16_t delta = 1 - 2 * radius;
+	int16_t error = 0;
+	while (y_ >= 0) {
+		TFT_fillRectangle(x + x_-size-1, y + y_-size, size, size, color);
+		TFT_fillRectangle(x + x_-size-1, y - y_, size, size, color);
+		TFT_fillRectangle(x - x_+1, y + y_-size, size, size, color);
+		TFT_fillRectangle(x - x_+1, y - y_, size, size, color);
+		error = 2 * (delta + y_) - 1;
+		if ((delta < 0) && (error <= 0)) {
+			delta += 2 * ++x_ + 1;
+			continue;
+		}
+		if ((delta > 0) && (error > 0)) {
+			delta -= 2 * --y_ + 1;
+			continue;
+		}
+		delta += 2 * (++x_ - y_--);
+	}
+	//Обновление положения курсора
+	TFT_cursorX = x;
+	TFT_cursorY = y;
 }
 //Нарисовать прямоугольник начиная с точки (x:y), с указанной длиной, высотой, шириной линии и цветом
 void TFT_drawRectangle(uint16_t x, uint16_t y, uint16_t length, uint16_t height, uint8_t size, uint16_t color) {
