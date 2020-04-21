@@ -466,11 +466,6 @@
               <FilePath>../Core/Src/adc.c</FilePath>
             </File>
             <File>
-              <FileName>dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/dma.c</FilePath>
-            </File>
-            <File>
               <FileName>i2c.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/i2c.c</FilePath>
@@ -639,6 +634,16 @@
               <FileName>TimeAndDateSetupMode.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Clock\Src\TimeAndDateSetupMode.c</FilePath>
+            </File>
+            <File>
+              <FileName>MelodyPlayer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Clock\Src\MelodyPlayer.c</FilePath>
+            </File>
+            <File>
+              <FileName>Alarm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Clock\Src\Alarm.c</FilePath>
             </File>
           </Files>
         </Group>

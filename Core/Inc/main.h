@@ -85,10 +85,6 @@ void Error_Handler(void);
 #define Led_GPIO_Port GPIOA
 #define IR_OUT_Pin GPIO_PIN_3
 #define IR_OUT_GPIO_Port GPIOB
-#define Buzzer_Pin GPIO_PIN_4
-#define Buzzer_GPIO_Port GPIOB
-#define RGB_Pin GPIO_PIN_5
-#define RGB_GPIO_Port GPIOB
 #define T_IRQ_Pin GPIO_PIN_6
 #define T_IRQ_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */

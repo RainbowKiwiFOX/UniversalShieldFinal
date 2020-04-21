@@ -25,7 +25,6 @@
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim3;
-DMA_HandleTypeDef hdma_tim3_ch2;
 
 /* TIM3 init function */
 void MX_TIM3_Init(void)
@@ -63,7 +62,7 @@ void MX_TIM3_Init(void)
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -81,26 +80,6 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
   /* USER CODE END TIM3_MspInit 0 */
     /* TIM3 clock enable */
     __HAL_RCC_TIM3_CLK_ENABLE();
-  
-    /* TIM3 DMA Init */
-    /* TIM3_CH2 Init */
-    hdma_tim3_ch2.Instance = DMA1_Stream5;
-    hdma_tim3_ch2.Init.Channel = DMA_CHANNEL_5;
-    hdma_tim3_ch2.Init.Direction = DMA_MEMORY_TO_PERIPH;
-    hdma_tim3_ch2.Init.PeriphInc = DMA_PINC_DISABLE;
-    hdma_tim3_ch2.Init.MemInc = DMA_MINC_ENABLE;
-    hdma_tim3_ch2.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
-    hdma_tim3_ch2.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
-    hdma_tim3_ch2.Init.Mode = DMA_NORMAL;
-    hdma_tim3_ch2.Init.Priority = DMA_PRIORITY_LOW;
-    hdma_tim3_ch2.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
-    if (HAL_DMA_Init(&hdma_tim3_ch2) != HAL_OK)
-    {
-      Error_Handler();
-    }
-
-    __HAL_LINKDMA(tim_baseHandle,hdma[TIM_DMA_ID_CC2],hdma_tim3_ch2);
-
   /* USER CODE BEGIN TIM3_MspInit 1 */
 
   /* USER CODE END TIM3_MspInit 1 */
@@ -118,14 +97,14 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
   
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**TIM3 GPIO Configuration    
-    PB5     ------> TIM3_CH2 
+    PB4     ------> TIM3_CH1 
     */
-    GPIO_InitStruct.Pin = RGB_Pin;
+    GPIO_InitStruct.Pin = GPIO_PIN_4;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
-    HAL_GPIO_Init(RGB_GPIO_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE BEGIN TIM3_MspPostInit 1 */
 
@@ -144,9 +123,6 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
   /* USER CODE END TIM3_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_TIM3_CLK_DISABLE();
-
-    /* TIM3 DMA DeInit */
-    HAL_DMA_DeInit(tim_baseHandle->hdma[TIM_DMA_ID_CC2]);
   /* USER CODE BEGIN TIM3_MspDeInit 1 */
 
   /* USER CODE END TIM3_MspDeInit 1 */
