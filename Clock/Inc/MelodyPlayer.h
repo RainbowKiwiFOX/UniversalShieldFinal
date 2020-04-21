@@ -1,12 +1,29 @@
 #ifndef __MELODYPLAYER_H
 #include "main.h"
 
-#define buzzerPWMTIM htim3
+#define buzzerPWMTIM htim3 //Таймер на котором запущен ШИМ
+#define buzzerPWMChannel TIM_CHANNEL_1 //Канал ШИМ к которому подключен пассивный пьезоизлучатель
 
-/* Перечень частот нот разных октав */
+/* Перечень частот нот разных октав 
+Октавы ниже первой не звучат на пьезоизлучателях, а выше четвёртой сильно режут слух
+*/
 typedef enum {
+	//Пауза, 0 Гц
 	P 		= 0,
-	
+	//Первая октава
+	C1 		= 262,
+	C_1		= 277,
+	D1		=	294,
+	D_1		= 311,
+	E1		=	330,
+	F1		=	349,
+	F_1		=	370,
+	G1		=	392,
+	G_1		=	415,
+	A1		=	440,
+	A_1		=	466,
+	B1		= 494,
+	//Вторая октава
 	C2 		= 523,
 	C_2		= 524,
 	D2		=	587,
@@ -19,7 +36,7 @@ typedef enum {
 	A2		=	880,
 	A_2		=	932,
 	B2		= 988,
-	
+	//Третья октава
 	C3 		= 1046,
 	C_3		= 1108,
 	D3		=	1174,
@@ -32,14 +49,39 @@ typedef enum {
 	A3		=	1720,
 	A_3		=	1864,
 	B3		= 1975,
+	//Четвёртая октава
+	C4 		= 2093,
+	C_4		= 2217,
+	D4		=	2349,
+	D_4		= 2489,
+	E4		=	2637,
+	F4		=	2794,
+	F_4		=	2960,
+	G4		=	3136,
+	G_4		=	3332,
+	A4		=	3440,
+	A_4		=	3729,
+	B4		= 3951,
 } note_t;
 
+//Одна частица массива мелодии
 typedef struct {
 	note_t note;				//Нота
 	uint16_t duration;	//Длительность звучания
 } melodyBit_t;
 
-void playMelody(melodyBit_t melody[], uint16_t size);
+//Воспроизвести мелодию
+void melodyPlay(melodyBit_t melody[], uint16_t size);
+//Поставить на паузу/остановить воспроизведение
+void melodyPause(void);
+//Продолжить воспроизведение
+void melodyResume(void);
+//Возвращает истину если сейчас проигрывается какая-либо мелодия
+uint8_t melodyIsPlaying(void);
+//Получить длину мелодии в мс
+uint32_t getMelodyDuration(melodyBit_t melody[], uint16_t size);
+//Получить текущее время воспроизведение в мс
+uint32_t melodyGetCurrentTime(void);
+//Один тик воспроизведения, вызывается в прерывании системного таймера
 void melodyTick(void);
-
 #endif
