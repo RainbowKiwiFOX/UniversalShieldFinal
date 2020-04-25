@@ -174,6 +174,6 @@ static const unsigned char mono5x8_bitmap[] = {
 	0x48, 0x34, 0x14, 0x14, 0x7C,            // Code for char я
 };
 
-static TFT_font mono5x8 = {5,8,1,mono5x8_bitmap};
+__attribute__((unused)) static TFT_font mono5x8 = {5,8,1,mono5x8_bitmap};
 
 #endif

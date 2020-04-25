@@ -50,7 +50,10 @@ void US_main(void) {
 	
 	while(1) {
 		//Обработка событий и вызов состояний
-		taskManagerTick();
+		//taskManagerTick();
+		TFT_setColor(TFT_COLOR_Red);
+		TFT_setFontSize(2);
+		TFT_test();
 	}
 	//TODO: Календарь, рисование, график изменения температуры, осциллограф по звуку, тестирование пищалки, светодиода, ик-приёмника, освещённости, микрофона
 }
