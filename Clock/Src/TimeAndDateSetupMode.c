@@ -1,8 +1,8 @@
 #include "UniversalShield.h"
 
-#include "BD663474.h"
-#include "XPT2046.h"
-#include "DS3231.h"					//Часы реального времени
+#include "BD663474.h"		//Дисплей
+#include "XPT2046.h"		//Тачскрин
+#include "DS3231.h"			//Часы реального времени
 #include "DisplayButtons.h" //Экранные кнопки
 
 
@@ -10,18 +10,18 @@
 //Расчёт X для расположения текста по центру, size - кол-во символов
 #define getMeanX(size, fontSize) ((320-(size*5*fontSize+(size-1)*fontSize*1))/2)
 //Настройки вывода времени
-#define fontSize 4											//Размер шрифта
-#define startX 120			//Расчёт начального X печати времени
+#define fontSize 4							//Размер шрифта
+#define startX 120							//Расчёт начального X печати времени
 #define startY 80
 #define startYDate	startY+7*fontSize+30
 
-#define curStartX (startX+6)						//Расчёт начального X печати курсора
-#define curStartY (startY-10)						//Начальный Y печати курсора
-#define curStep 72 											//Шаг перемещения курсора
-#define curWidth 3											//Ширина линии курсора
-#define curLength 30										//Длина курсора
-#define curHeight (curLength/2)					//Высота курсора
-#define curDistance (11*fontSize)				//Расстояние между верхней и нижней стрелочкой
+#define curStartX (startX+6)				//Расчёт начального X печати курсора
+#define curStartY (startY-10)				//Начальный Y печати курсора
+#define curStep 72 							//Шаг перемещения курсора
+#define curWidth 3							//Ширина линии курсора
+#define curLength 30						//Длина курсора
+#define curHeight (curLength/2)				//Высота курсора
+#define curDistance (11*fontSize)			//Расстояние между верхней и нижней стрелочкой
 //Точки вершин треугольников курсора
 #define curX0 (curStartX+(cursorPos%3)*curStep)
 #define curY0 (curStartY+(cursorPos/3)*(startYDate-startY))
@@ -31,8 +31,8 @@
 #define curX2 curX0+curLength
 #define curY2 curY0
 
-#define BACKGROUND_COLOR TFT_COLOR_Blue	//Цвет фона экрана
-#define BAR_COLOR	TFT_COLOR_Navy				//Цвет верхней полосы экрана
+#define BACKGROUND_COLOR TFT_COLOR_Blue		//Цвет фона экрана
+#define BAR_COLOR TFT_COLOR_Navy			//Цвет верхней полосы экрана
 #define TEXT_COLOR TFT_COLOR_White			//Цвет текста на экране
 
 /* Прототипы функций */
@@ -47,23 +47,23 @@ extern RTC_date date;
 //Позиция курсора
 static uint8_t cursorPos = 0;
 //Максимальные значения дней в месяцах
-uint8_t monthsMax[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+const uint8_t monthsMax[] = {31,28,31,30,31,30,31,31,30,31,30,31};
 //Кнопки перемещения курсора по времени и дате
 static button_t cursorMove[] = {
-	//ID	posX 	 				poxY			Длина Высота	Вызов функции
-	{  0 ,startX, 		startY,				48  ,30		, setCursor}, //Часы
-	{  1 ,startX+70,	startY,				48  ,30		, setCursor},	//Минуты
-	{  2 ,startX+140, startY, 			48  ,30		, setCursor},	//Секунды
-	{  3 ,startX, 		startYDate,		48  ,30		, setCursor}, //День
-	{  4 ,startX+70,	startYDate,		48  ,30		, setCursor},	//Месяц
-	{  5 ,startX+140, startYDate, 	48  ,30		, setCursor},	//Год
+	//ID	posX 		 poxY		Длина Высота Вызов функции
+	{  0 ,startX, 		startY,		 48,	30,	  setCursor}, 	//Часы
+	{  1 ,startX+70,	startY,		 48,	30,	  setCursor},	//Минуты
+	{  2 ,startX+140, 	startY, 	 48,	30,	  setCursor},	//Секунды
+	{  3 ,startX, 		startYDate,	 48,	30,	  setCursor}, 	//День
+	{  4 ,startX+70,	startYDate,	 48,	30,	  setCursor},	//Месяц
+	{  5 ,startX+140, 	startYDate,  48,	30,	  setCursor},	//Год
 };
 //Кнопки инкремента и декремента значений, "сохранить"
 static button_t upDownSave[] = {
-	//ID	posX 					 poxY		Длина 							Высота								Вызов функции
-	{  0 , 0, 						0, 	curLength+curWidth  ,curHeight+curWidth		, incTimeAndDate}, //Увеличить
-	{  1 , 0,							0, 	curLength+curWidth  ,curHeight+curWidth		, decTimeAndDate}, //Уменьшить
-	{  3 ,getMeanX(9,3)-5,200, 	 170,									31, 								saveTimeAndDate}, //Сохранение
+	//ID	posX 				poxY		Длина 				Высота			Вызов функции
+	{  0 , 0, 					0, 		curLength+curWidth,	curHeight+curWidth, incTimeAndDate},	//Увеличить
+	{  1 , 0,					0, 		curLength+curWidth,	curHeight+curWidth, decTimeAndDate}, 	//Уменьшить
+	{  3 ,getMeanX(9,3)-5,		200, 		170,	     		31, 			saveTimeAndDate},	//Сохранение
 };
 //Визуальная часть кнопки "Сохранить"
 static visualButton_t save[] = {
@@ -120,15 +120,19 @@ void incTimeAndDate(uint16_t i, touchStates ts) {
 			break;
 		}
 		case 3: {
-			if(++date.day > 31) date.day = 1;
+			if(++date.day > monthsMax[date.month-1]+((date.month==2) && (date.year%4 == 0))) date.day = 1;
 			break;
 		}
 		case 4: {
 			if(++date.month > 12) date.month = 1;
+			//Проверка максимального дня месяца с учётом високосности года
+			if(date.day > monthsMax[date.month-1]+((date.month==2) && (date.year%4 == 0))) date.day = monthsMax[date.month-1]+((date.month==2) && (date.year%4 == 0));
 			break;
 		}
 		case 5: {
 			if(++date.year > 99) date.year = 0;
+			//Проверка максимального дня месяца с учётом високосности года
+			if(date.day > monthsMax[date.month-1]+((date.month==2) && (date.year%4 == 0))) date.day = monthsMax[date.month-1]+((date.month==2) && (date.year%4 == 0));
 			break;
 		}
 	}
@@ -153,15 +157,19 @@ void decTimeAndDate(uint16_t i, touchStates ts) {
 			break;
 		}
 		case 3: {
-			if(--date.day < 1) date.day = 31;
+			if(--date.day < 1) date.day = monthsMax[date.month-1]+((date.month==2) && (date.year%4 == 0));
 			break;
 		}
 		case 4: {
 			if(--date.month < 1) date.month = 12;
+			//Проверка максимального дня месяца с учётом високосности года
+			if(date.day > monthsMax[date.month-1]+((date.month==2) && (date.year%4 == 0))) date.day = monthsMax[date.month-1]+((date.month==2) && (date.year%4 == 0));
 			break;
 		}
 		case 5: {
 			if(--date.year > 99) date.year = 99;
+			//Проверка максимального дня месяца с учётом високосности года
+			if(date.day > monthsMax[date.month-1]+((date.month==2) && (date.year%4 == 0))) date.day = monthsMax[date.month-1]+((date.month==2) && (date.year%4 == 0));
 			break;
 		}
 	}
@@ -200,10 +208,10 @@ void saveTimeAndDate(uint16_t i, touchStates ts) {
 void timeAndDateSetupMode(callStatus_t s, eventState_t *es) {
 	//Если функция была вызвана впервые, то
 	if(s == initial) {
-		time = RTC_getTime(); 	//Обновление текущего времени
-		date = RTC_getDate();		//Обновление текущей даты
-		TFT_fillDisplay(BACKGROUND_COLOR); //Заливка дисплея фоном
-		setCursor(0, T_pressed);					 //Обнуление значения курсора
+		time = RTC_getTime(); 				//Обновление текущего времени
+		date = RTC_getDate();				//Обновление текущей даты
+		TFT_fillDisplay(BACKGROUND_COLOR); 	//Заливка дисплея фоном
+		setCursor(0, T_pressed);			//Обнуление значения курсора
 		//Рисование бара
 		TFT_fillRectangle(0,0,320,28,BAR_COLOR);
 		TFT_setTextBackColor(TFT_COLOR_none);
