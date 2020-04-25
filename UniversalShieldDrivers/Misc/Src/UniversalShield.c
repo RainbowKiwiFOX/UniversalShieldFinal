@@ -7,7 +7,7 @@
 #include "XPT2046.h"
 /* Прочие библиотеки */
 #include "TaskManager.h"		//Диспетчер задач
-#include "DS3231.h"					//Часы реального времени
+#include "DS3231.h"				//Часы реального времени
 /* Прототипы функций */
 
 /* Глобальные переменные */
@@ -60,9 +60,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	//Обработка нажатия кнопки энкодера
 	if(GPIO_Pin == ENC_SW_Pin) {
 		//Простой антидребезг
-		static uint32_t lastPressTime = 0xFFFFFF;			//Время последнего нажатия
-		if(HAL_GetTick()-lastPressTime < 200) return;	//Если нажатие было менее 250 мс назад, то возврат
-		lastPressTime = HAL_GetTick();								//Обновление времени нажатия
+		static uint32_t lastPressTime = 0xFFFFFF;		//Время последнего нажатия
+		if(HAL_GetTick()-lastPressTime < 200) return;	//Если нажатие было менее 200 мс назад, то возврат
+		lastPressTime = HAL_GetTick();					//Обновление времени нажатия
 		
 		//Если кнопка нажата, установка состояния события как "произошло"
 		setEventState(encoderPress_e, happen);

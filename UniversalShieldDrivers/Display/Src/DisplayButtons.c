@@ -49,10 +49,10 @@ void printButton(visualButton_t button, uint8_t activeStatus) {
 	switch(button.form) {
 		case rectangle_f: //Отрисовка прямоугольника
 			//Рисование контура
-			if((button.borderdWidth != 0) && (button.borderСolor != TFT_COLOR_none || button.activeBorderColor != TFT_COLOR_none))
+			if((button.borderdWidth != 0) && (button.borderColor != TFT_COLOR_none || button.activeBorderColor != TFT_COLOR_none))
 			TFT_drawRectangle(button.button->posX, button.button->posY, 
 												button.button->length, button.button->width, 
-												button.borderdWidth, activeStatus ? button.activeBorderColor : button.borderСolor);
+												button.borderdWidth, activeStatus ? button.activeBorderColor : button.borderColor);
 		//Если есть внутренняя заливка, то её тоже нужно отрисовать
 			if(button.fillColor != TFT_COLOR_none)
 				TFT_fillRectangle(button.button->posX+button.borderdWidth, button.button->posY+button.borderdWidth, 
@@ -60,11 +60,11 @@ void printButton(visualButton_t button, uint8_t activeStatus) {
 												button.fillColor);
 			break;
 		case roundRectangle_f:
-			if((button.borderdWidth != 0) && (button.borderСolor != TFT_COLOR_none || button.activeBorderColor != TFT_COLOR_none))
+			if((button.borderdWidth != 0) && (button.borderColor != TFT_COLOR_none || button.activeBorderColor != TFT_COLOR_none))
 			TFT_drawRoundRect(button.button->posX, button.button->posY,
 												button.button->length, button.button->width,
 												button.borderdWidth*2.5f, button.borderdWidth,
-												activeStatus ? button.activeBorderColor : button.borderСolor);
+												activeStatus ? button.activeBorderColor : button.borderColor);
 			//Если есть внутренняя заливка, то её тоже нужно отрисовать
 			if(button.fillColor != TFT_COLOR_none)
 			TFT_fillRoundRect(button.button->posX+button.borderdWidth, button.button->posY+button.borderdWidth,
@@ -72,10 +72,10 @@ void printButton(visualButton_t button, uint8_t activeStatus) {
 												button.borderdWidth*2.5f, button.fillColor);
 			break;
 		case circle_f:
-			if((button.borderdWidth != 0) && (button.borderСolor != TFT_COLOR_none || button.activeBorderColor != TFT_COLOR_none))
+			if((button.borderdWidth != 0) && (button.borderColor != TFT_COLOR_none || button.activeBorderColor != TFT_COLOR_none))
 			TFT_drawCircle(button.button->posX, button.button->posY,
 												button.button->length, button.borderdWidth, 
-												activeStatus ? button.activeBorderColor : button.borderСolor);
+												activeStatus ? button.activeBorderColor : button.borderColor);
 			if(button.fillColor != TFT_COLOR_none)
 			TFT_fillCircle(button.button->posX, button.button->posY,
 												button.button->length-button.borderdWidth, 

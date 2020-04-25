@@ -11,10 +11,10 @@ void UART_printChar(char c) {
 	HAL_UART_Transmit(&huart2, (uint8_t*)&c, 1, 0xFF);
 }
 
-//Стандартная функция печатиы
-int fputc(int c, FILE * stream) {
+//Переопределение стандартной функции вывода
+int __io_putchar(int c) {
 	printPurpose(c);
-	return c; 
+	return c;
 }
 //Форматированная печать на дисплей
 void TFT_printf(const char * __restrict format, ...) {

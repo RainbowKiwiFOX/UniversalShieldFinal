@@ -698,7 +698,7 @@ void TFT_test(void) {
     uint32_t starttime = HAL_GetTick();
     /* Тест 0. Заливка дисплея сплошным цветом */
     TFT_clear();
-    sprintf(buff, "%d", HAL_GetTick()-starttime);
+    sprintf(buff, "%d", (int)(HAL_GetTick()-starttime));
     TFT_print(0,0,buff);
     HAL_Delay(1500);
     /* Тест 1. Заливка дисплея всеми основными цветами */
@@ -714,7 +714,7 @@ void TFT_test(void) {
         for(uint16_t num = TFT_Width/16*TFT_Height; num > 0; num--) TFT_sendData(colorfol[n]);
     }
     TFT_CS_Set;
-    sprintf(buff, "%d", HAL_GetTick()-starttime);
+    sprintf(buff, "%d", (int)(HAL_GetTick()-starttime));
     TFT_print(0,0,buff);
     HAL_Delay(1500);
     /* Тест 2. Рисование лучей от точки (0,0) до противоположных сторон */
@@ -722,35 +722,35 @@ void TFT_test(void) {
     starttime = HAL_GetTick();
     for (uint8_t i = 0; i < 16; i++) TFT_drawLine(0,0, TFT_Width-1, TFT_Height-i*(TFT_Height/16)-1, 2, colorfol[i]);
     for (uint8_t i = 0; i < 16; i++) TFT_drawLine(0,0, TFT_Width-i*(TFT_Width/16)-1, TFT_Height-1, 2, colorfol[i]);
-    sprintf(buff, "%d", HAL_GetTick()-starttime);
+    sprintf(buff, "%d", (int)(HAL_GetTick()-starttime));
     TFT_print(0,0,buff);
     HAL_Delay(1500);
     /* Тест 3. Рисование окружностей разного диаметра */
     TFT_clear();
     starttime = HAL_GetTick();
     for (uint8_t i = 0; i < 16; i++) TFT_drawCircle(TFT_Width/2, TFT_Height/2, 7*i, 2, colorfol[i]);
-    sprintf(buff, "%d", HAL_GetTick()-starttime);
+    sprintf(buff, "%d", (int)(HAL_GetTick()-starttime));
     TFT_print(0,0,buff);
     HAL_Delay(1500);
     /* Тест 4. Рисование прямоугольников разного размера */
     TFT_clear();
     starttime = HAL_GetTick();
     for (uint8_t i = 0; i < 16; i++) TFT_drawRectangle(TFT_Width/32*i, TFT_Height/32*i, TFT_Width-TFT_Width/32*i*2, TFT_Height-TFT_Height/32*i*2, 2, colorfol[i]);  
-    sprintf(buff, "%d", HAL_GetTick()-starttime);
+    sprintf(buff, "%d", (int)(HAL_GetTick()-starttime));
     TFT_print(0,0,buff);
     HAL_Delay(1500);
     /* Тест 5. Рисование скруглённых прямоугольников разного размера */
     TFT_clear();
     starttime = HAL_GetTick();
     for (uint8_t i = 0; i < 16; i++) TFT_drawRoundRect(TFT_Width/32*i, TFT_Height/32*i, TFT_Width-TFT_Width/32*i*2, TFT_Height-TFT_Height/32*i*2, 7, 2, colorfol[i]);  
-    sprintf(buff, "%d", HAL_GetTick()-starttime);
+    sprintf(buff, "%d", (int)(HAL_GetTick()-starttime));
     TFT_print(0,0,buff);
     HAL_Delay(1500);
     /* Тест 6. Рисование треугольников разного размера */
     TFT_clear();
     starttime = HAL_GetTick();
     for (uint8_t i = 0; i < 16; i++) TFT_drawTriangle (TFT_Width/2 - TFT_Width/32*i, TFT_Height-TFT_Height/32*(16-i), TFT_Width/2 + TFT_Width/32*i, TFT_Height-TFT_Height/32*(16-i), TFT_Width/2, TFT_Height/32*(16-i), 2, colorfol[i]);  
-    sprintf(buff, "%d", HAL_GetTick()-starttime);
+    sprintf(buff, "%d", (int)(HAL_GetTick()-starttime));
     TFT_print(0,0,buff);
     HAL_Delay(1500);
     /* Тест 7. Рисование закрашенных геометрических фигур - круг, прямоугольника, скруглённого прямоугольника */
@@ -759,7 +759,7 @@ void TFT_test(void) {
     TFT_fillRoundRect(0, 0, TFT_Width-1, TFT_Height-1, 25, TFT_COLOR_Navy);
     TFT_fillRectangle(TFT_Width/16, TFT_Height/16, TFT_Width/16*14, TFT_Height/16*14, TFT_COLOR_White);
     TFT_fillCircle(TFT_Width/2, TFT_Height/2, TFT_Height/4, TFT_COLOR_Red);
-    sprintf(buff, "%d", HAL_GetTick()-starttime);
+    sprintf(buff, "%d", (int)(HAL_GetTick()-starttime));
     TFT_print(0,0,buff);
     HAL_Delay(1500);
     /* Тест 8. Печать всех имеющихся в шрифте символов на экране */
@@ -770,7 +770,7 @@ void TFT_test(void) {
     //for(uint8_t i = 1; i != 0; i++) TFT_printCharUTF8(i); //Печать латинских и обычных символов
     for(uint8_t i = 32; i < 128; i++) TFT_printCharUTF8(i); //Печать латинских и обычных символов
     for(uint16_t i = 0xD090; i < 0xD0D0; i++) TFT_printCharUTF8(i); //Печать кириллицы
-    sprintf(buff, "%d", HAL_GetTick()-starttime);
+    sprintf(buff, "%d", (int)(HAL_GetTick()-starttime));
     TFT_print(0,TFT_Height-1-8*currentFontSize,buff);
     HAL_Delay(1500);
 }

@@ -23,10 +23,10 @@ typedef struct {
 } button_t;
 //Структура визуальной кнопки
 typedef struct {
-	button_t *button;						//Основная кнопка
-	uint8_t form;								//Форма кнопки
-	uint16_t borderСolor;				//Цвет контура кнопки
-	uint16_t activeBorderColor;	//Цвет контура при нажатии на неё
+	button_t *button;					//Основная кнопка
+	uint8_t form;						//Форма кнопки
+	uint16_t borderColor;				//Цвет контура кнопки
+	uint16_t activeBorderColor;			//Цвет контура при нажатии на неё
 	uint8_t borderdWidth;				//Ширина контура кнопки
 	uint16_t fillColor;					//Цвет заливки кнопки
 } visualButton_t;
