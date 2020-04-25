@@ -4,21 +4,26 @@
 #include <stdarg.h>
 #include "BD663474.h"
 
-void (*printPurpose)(char); //Указатель на функцию печати текста
+void (*printPurpose)(char *ptr, int len); //Указатель на функцию печати текста
 
-//Печать символа в UART
-void UART_printChar(char c) {
-	HAL_UART_Transmit(&huart2, (uint8_t*)&c, 1, 0xFF);
+//Печать строки в UART
+void UART_printStr(char *ptr, int len) {
+	HAL_UART_Transmit(&huart2, (uint8_t*)ptr, len, 0xFF);
 }
-
+//Печать строки на дисплей
+void TFT_printStr(char *ptr, int len) {
+	for(int i = 0; i < len; i++) {
+		TFT_printChar(ptr[i]);
+	}
+}
 //Переопределение стандартной функции вывода
-int __io_putchar(int c) {
-	printPurpose(c);
-	return c;
+int _write(int file, char *ptr, int len) {
+	printPurpose(ptr, len);
+	return len;
 }
 //Форматированная печать на дисплей
 void TFT_printf(const char * __restrict format, ...) {
-	printPurpose = TFT_printChar;
+	printPurpose = TFT_printStr;
 	va_list argptr;
 	va_start(argptr, format);
 	vfprintf(stderr, format, argptr);
@@ -26,7 +31,7 @@ void TFT_printf(const char * __restrict format, ...) {
 }
 //Форматированная печать в UART
 void UART_printf(const char * __restrict format, ...) {
-	printPurpose = UART_printChar;
+	printPurpose = UART_printStr;
 	va_list argptr;
 	va_start(argptr, format);
 	vfprintf(stderr, format, argptr);
